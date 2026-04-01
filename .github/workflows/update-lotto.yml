@@ -5,16 +5,19 @@ name: Update Lotto Data
 
 on:
   schedule:
-    # 매주 토요일 오후 10시 (한국시간) 실행되도록 설정 (UTC 기준 13:00)
     - cron: '0 13 * * 6'
-  workflow_dispatch: # Actions 탭에서 수동 실행 버튼 활성화
+  workflow_dispatch:
 
 jobs:
   update-data:
     runs-on: ubuntu-latest
-
+    
+    # [핵심 변경] 깃허브 액션 봇에게 파일 쓰기(저장) 권한 부여
+    permissions:
+      contents: write
+      
     steps:
-      - name: 저장소 체크아웃 (파일 가져오기)
+      - name: 저장소 체크아웃
         uses: actions/checkout@v3
 
       - name: 파이썬 환경 설정
@@ -36,4 +39,5 @@ jobs:
           git config --global user.email "action@github.com"
           git add lotto_data.js lotto_history_data.js
           git commit -m "Auto-update lotto data by Python" || echo "No changes to commit"
-          git push
+          # [핵심 변경] main 브랜치로 명확하게 푸시(저장) 타겟팅
+          git push origin main
