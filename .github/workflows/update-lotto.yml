@@ -1,0 +1,32 @@
+# .github/workflows/update-lotto.yml
+name: Update Lotto Data
+
+on:
+  schedule:
+    # 매주 토요일 오후 11시(한국시간 기준)에 자동 실행 (UTC 기준 14시)
+    - cron: '0 14 * * 6'
+  workflow_dispatch: # 수동으로 실행할 수 있는 버튼 활성화
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Run update script
+        run: node scripts/updateData.js
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "GitHub Action Bot"
+          git config --global user.email "action@github.com"
+          git add data.json
+          git commit -m "Auto-update lotto data" || echo "No changes to commit"
+          git push
