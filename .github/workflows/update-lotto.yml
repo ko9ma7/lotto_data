@@ -1,32 +1,39 @@
-# .github/workflows/update-lotto.yml
+# 파일명: .github/workflows/update-lotto.yml
+# 경로: lotto_data/.github/workflows/update-lotto.yml
+
 name: Update Lotto Data
 
 on:
   schedule:
-    # 매주 토요일 오후 11시(한국시간 기준)에 자동 실행 (UTC 기준 14시)
-    - cron: '0 14 * * 6'
-  workflow_dispatch: # 수동으로 실행할 수 있는 버튼 활성화
+    # 매주 토요일 오후 10시 (한국시간) 실행되도록 설정 (UTC 기준 13:00)
+    - cron: '0 13 * * 6'
+  workflow_dispatch: # Actions 탭에서 수동 실행 버튼 활성화
 
 jobs:
   update-data:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: 저장소 체크아웃 (파일 가져오기)
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: 파이썬 환경 설정
+        uses: actions/setup-python@v4
         with:
-          node-version: '18'
+          python-version: '3.10'
 
-      - name: Run update script
-        run: node scripts/updateData.js
+      - name: 필요한 파이썬 라이브러리 설치
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4
 
-      - name: Commit and push changes
+      - name: 파이썬 업데이트 스크립트 실행
+        run: python update_data.py
+
+      - name: 변경된 .js 파일들 깃허브에 자동 저장 (Commit & Push)
         run: |
           git config --global user.name "GitHub Action Bot"
           git config --global user.email "action@github.com"
-          git add data.json
-          git commit -m "Auto-update lotto data" || echo "No changes to commit"
+          git add lotto_data.js lotto_history_data.js
+          git commit -m "Auto-update lotto data by Python" || echo "No changes to commit"
           git push
