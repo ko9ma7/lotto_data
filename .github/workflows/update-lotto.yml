@@ -8,11 +8,14 @@ on:
     - cron: '0 13 * * 6'
   workflow_dispatch:
 
+# [핵심 추가] 깃허브 액션 구동 환경을 최신(Node.js 24)으로 강제 설정하여 경고 메시지 제거
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   update-data:
     runs-on: ubuntu-latest
     
-    # [핵심 변경] 깃허브 액션 봇에게 파일 쓰기(저장) 권한 부여
     permissions:
       contents: write
       
@@ -39,5 +42,4 @@ jobs:
           git config --global user.email "action@github.com"
           git add lotto_data.js lotto_history_data.js
           git commit -m "Auto-update lotto data by Python" || echo "No changes to commit"
-          # [핵심 변경] main 브랜치로 명확하게 푸시(저장) 타겟팅
           git push origin main
