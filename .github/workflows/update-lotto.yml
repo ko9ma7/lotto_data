@@ -5,10 +5,10 @@ name: Update Lotto Data
 
 on:
   schedule:
-    - cron: '0 13 * * 6'
+    # 6시간마다 (하루 4번) 실행. 주말에 늦게 올라오는 데이터도 누락 없이 확실하게 가져옵니다.
+    - cron: '0 */6 * * *'
   workflow_dispatch:
 
-# [핵심 추가] 깃허브 액션 구동 환경을 최신(Node.js 24)으로 강제 설정하여 경고 메시지 제거
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
