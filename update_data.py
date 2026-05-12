@@ -1,15 +1,14 @@
-# 파일명: update_data.py
-# 경로: 깃허브 저장소 최상위 (main 브랜치 루트)
-
 import os
 import re
 import json
 import random
 import requests
 from bs4 import BeautifulSoup
+from datetime import datetime, timedelta
 
 USER_AGENTS = [
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
 ]
 KAKAO_API_KEY = "a6b27b6dab16c7e3459bb9589bf1269d"
 
@@ -33,31 +32,25 @@ def save_js_data(filepath, var_name, data):
         f.write(";\n")
 
 def get_latest_round():
+    # [수정됨] 네이버 검색 대신, 1회차 기준 날짜 계산으로 정확한 최신 회차를 도출합니다. (차단 위험 0%)
     try:
-        url = "https://search.naver.com/search.naver?query=로또당첨번호"
-        r = requests.get(url, headers=get_headers(), timeout=10)
-        m = re.search(r'(\d+)회\s*당첨번호', r.text)
-        if m: return int(m.group(1))
-    except: pass
-    return 0
+        first_draw_date = datetime(2002, 12, 7, 21, 0, 0) # 1회차 추첨일 (토요일 밤 9시 기준)
+        korea_time = datetime.utcnow() + timedelta(hours=9)
+        delta = korea_time - first_draw_date
+        current_round = int(delta.total_seconds() // (7 * 24 * 3600)) + 1
+        return current_round
+    except:
+        return 0
 
-def fetch_winning_numbers_naver(draw_no):
-    url = f"https://search.naver.com/search.naver?query={requests.utils.quote(f'로또 {draw_no}회 당첨번호')}"
+def fetch_winning_numbers_dhlottery(draw_no):
+    # [수정됨] 네이버 스크래핑 대신 '동행복권 공식 API'를 사용하여 안정성을 극대화합니다.
+    url = f"https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo={draw_no}"
     try:
-        r = requests.get(url, headers=get_headers(), timeout=10)
-        soup = BeautifulSoup(r.text, "html.parser")
-        text = soup.get_text(separator=" ")
-
-        pattern = r'(?:당첨번호|당첨 번호)\D{0,15}?(\d{1,2})\D{1,5}?(\d{1,2})\D{1,5}?(\d{1,2})\D{1,5}?(\d{1,2})\D{1,5}?(\d{1,2})\D{1,5}?(\d{1,2})'
-        m = re.search(pattern, text)
-        if m:
-            nums = [int(m.group(i)) for i in range(1, 7)]
-            search_region = text[max(0, m.start()-100):m.end()+300]
-            bonus_m = re.search(r'보너스\s*번호\s*[:：]?\s*(?<!\d)(\d{1,2})(?!\d|등)', search_region)
-            if not bonus_m: bonus_m = re.search(r'보너스\D{0,15}?(?<!\d)(\d{1,2})(?!\d|등)', text)
-            if bonus_m: 
-                bonus = int(bonus_m.group(1))
-                if bonus not in nums: nums.append(bonus)
+        r = requests.get(url, timeout=10)
+        data = r.json()
+        if data.get("returnValue") == "success":
+            nums = [data[f"drwtNo{i}"] for i in range(1, 7)]
+            nums.append(data["bnusNo"])
             return nums
     except: pass
     return None
@@ -70,6 +63,11 @@ def fetch_stores_naver_news(draw_no):
         soup = BeautifulSoup(r.text, "html.parser")
         links = [a['href'] for a in soup.find_all('a', href=True) if 'news.naver.com' in a['href'] and 'article' in a['href']][:3]
         
+        if not links:
+            # [추가됨] 뉴스 기사가 아직 없을 경우 로그로 안내합니다.
+            print("  ⚠️ 네이버 뉴스에서 1등 배출점 관련 기사를 아직 찾지 못했습니다.")
+            return []
+
         blacklist = ["홈페이지", "뉴스", "기자", "기사", "동행복권", "인터넷", "판매점", "당첨", "연합뉴스"]
         for link in links:
             nr = requests.get(link, headers=get_headers(), timeout=10)
@@ -113,7 +111,9 @@ def main():
     data_file = 'lotto_data.js'
 
     latest_round = get_latest_round()
-    if latest_round == 0: return
+    if latest_round == 0: 
+        print("❌ 회차 계산에 실패했습니다.")
+        return
 
     print(f"✅ 현재 최신 회차: {latest_round}회")
     print("🔍 최근 5회차의 누락분만 빠르게 스캔합니다.\n")
@@ -124,7 +124,6 @@ def main():
 
     unsaved_updates = 0
     
-    # 최신 회차 기준 최근 5개만 검사
     start_round = max(1, latest_round - 5)
 
     for draw_no in range(start_round, latest_round + 1):
@@ -138,11 +137,14 @@ def main():
         print(f"▶ [{draw_no}회차] 누락 확인. 데이터 수집 시작...")
 
         if missing_hist:
-            nums = fetch_winning_numbers_naver(draw_no)
+            # [수정됨] 공식 API 호출 함수 적용
+            nums = fetch_winning_numbers_dhlottery(draw_no)
             if nums:
                 hist_data[str(draw_no)] = nums
                 print(f"  ✅ 당첨번호 복구 완료: {nums}")
                 unsaved_updates += 1
+            else:
+                print(f"  ❌ 당첨번호 수집 실패 (API 응답 지연 등)")
 
         if missing_store:
             stores = fetch_stores_naver_news(draw_no)
