@@ -4,8 +4,8 @@ const lottoData = [
         "n": "가판대",
         "m": "수동",
         "a": "서울 도봉구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -13,8 +13,8 @@ const lottoData = [
         "n": "로또복권",
         "m": "수동",
         "a": "부산 사하구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -22,8 +22,8 @@ const lottoData = [
         "n": "럭키",
         "m": "수동",
         "a": "부산 북구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -31,8 +31,8 @@ const lottoData = [
         "n": "메트로센터점",
         "m": "수동",
         "a": "대구 중구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -40,8 +40,8 @@ const lottoData = [
         "n": "일등복권편의점",
         "m": "수동",
         "a": "대구 달서구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -49,8 +49,8 @@ const lottoData = [
         "n": "한마음병원앞버스매표소",
         "m": "수동",
         "a": "인천 계양구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -58,8 +58,8 @@ const lottoData = [
         "n": "한꿈복권방",
         "m": "수동",
         "a": "울산 중구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -67,8 +67,8 @@ const lottoData = [
         "n": "하남시청 세븐일레븐 로또",
         "m": "수동",
         "a": "경기 하남시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -76,8 +76,8 @@ const lottoData = [
         "n": "대운상사",
         "m": "수동",
         "a": "경기 남양주시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -85,8 +85,8 @@ const lottoData = [
         "n": "행운로또방",
         "m": "수동",
         "a": "강원 화천군",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -103,8 +103,8 @@ const lottoData = [
         "n": "씨유 팽성공원",
         "m": "수동",
         "a": "경기 평택시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -112,8 +112,8 @@ const lottoData = [
         "n": "행운드림복권",
         "m": "수동",
         "a": "경북 안동시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -121,8 +121,8 @@ const lottoData = [
         "n": "황금로또명당",
         "m": "수동",
         "a": "경남 양산시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -130,8 +130,8 @@ const lottoData = [
         "n": "하남시청 세븐일레븐 로또",
         "m": "수동",
         "a": "하남시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -139,8 +139,8 @@ const lottoData = [
         "n": "대운상사",
         "m": "수동",
         "a": "남양주시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -148,8 +148,8 @@ const lottoData = [
         "n": "씨유 팽성공원",
         "m": "수동",
         "a": "평택시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -157,8 +157,8 @@ const lottoData = [
         "n": "△사하구 낙동대로 △북구 시랑로",
         "m": "자동",
         "a": "도봉구 마들로), 부산 2곳",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -166,8 +166,8 @@ const lottoData = [
         "n": "△계양구 계양대로",
         "m": "자동",
         "a": "달서구 대명천로), 인천 1곳",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -175,8 +175,8 @@ const lottoData = [
         "n": "△평택시 안정순환로 △하남시 대청로 △남양주시 장현로",
         "m": "자동",
         "a": "중구 번영로), 경기 3곳",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -184,8 +184,8 @@ const lottoData = [
         "n": "△음성군 신내로",
         "m": "자동",
         "a": "화천군 상승로), 충북 1곳",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -193,8 +193,8 @@ const lottoData = [
         "n": "△양산시 덕계로",
         "m": "자동",
         "a": "안동시 경동로), 경남 1곳",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -202,8 +202,8 @@ const lottoData = [
         "n": "가판대",
         "m": "자동",
         "a": "서울 도봉구 마들로 859-19 도봉산역 1번출구앞 가판대",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -211,8 +211,8 @@ const lottoData = [
         "n": "로또복권",
         "m": "자동",
         "a": "부산 사하구 낙동대로 327-1 1층복권방",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -220,8 +220,8 @@ const lottoData = [
         "n": "럭키",
         "m": "자동",
         "a": "부산 북구 시랑로 137",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -229,8 +229,8 @@ const lottoData = [
         "n": "메트로센터점",
         "m": "자동",
         "a": "대구 중구 달구벌대로 지하 2100 메트로센터C412호",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -238,8 +238,8 @@ const lottoData = [
         "n": "일등복권편의점",
         "m": "자동",
         "a": "대구 달서구 대명천로 220 1층",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -247,8 +247,8 @@ const lottoData = [
         "n": "한마음병원앞버스매표소",
         "m": "자동",
         "a": "인천 계양구 계양대로 53",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -256,8 +256,8 @@ const lottoData = [
         "n": "한꿈복권방",
         "m": "자동",
         "a": "울산 중구 번영로 586",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -265,8 +265,8 @@ const lottoData = [
         "n": "하남시청 세븐일레븐 로또",
         "m": "자동",
         "a": "경기 하남시 대청로 15 103호 세븐일레븐 편의점",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -274,8 +274,8 @@ const lottoData = [
         "n": "씨유 팽성공원",
         "m": "자동",
         "a": "경기 평택시 안정순환로 275 1층 CU편의점 내",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -283,8 +283,8 @@ const lottoData = [
         "n": "대운상사",
         "m": "자동",
         "a": "경기 남양주시 장현로 178 장현리 229-4외 1필지 주2동 106호",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -292,8 +292,8 @@ const lottoData = [
         "n": "행운로또방",
         "m": "자동",
         "a": "강원 화천군 상승로 46 1층",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -301,8 +301,8 @@ const lottoData = [
         "n": "행운드림복권",
         "m": "자동",
         "a": "경북 안동시 경동로 465",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -310,8 +310,8 @@ const lottoData = [
         "n": "황금로또명당",
         "m": "자동",
         "a": "경남 양산시 덕계로 101",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -319,8 +319,8 @@ const lottoData = [
         "n": "가판14호",
         "m": "반자동",
         "a": "서울 중구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -328,8 +328,8 @@ const lottoData = [
         "n": "월드24시",
         "m": "반자동",
         "a": "서울 은평구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -337,8 +337,8 @@ const lottoData = [
         "n": "로또킹",
         "m": "반자동",
         "a": "서울 영등포구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -346,8 +346,8 @@ const lottoData = [
         "n": "보경식품",
         "m": "반자동",
         "a": "서울 강북구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -355,8 +355,8 @@ const lottoData = [
         "n": "오천억복권방",
         "m": "반자동",
         "a": "광주 서구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -364,8 +364,8 @@ const lottoData = [
         "n": "로또명당 황금돼지",
         "m": "수동",
         "a": "대전 중구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -373,8 +373,8 @@ const lottoData = [
         "n": "제우스테크",
         "m": "수동",
         "a": "대전 서구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -382,8 +382,8 @@ const lottoData = [
         "n": "세븐일레븐 안산역점",
         "m": "수동",
         "a": "경기 안산시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -391,8 +391,8 @@ const lottoData = [
         "n": "로또유통",
         "m": "수동",
         "a": "경기 안산시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -400,8 +400,8 @@ const lottoData = [
         "n": "한국슈퍼",
         "m": "수동",
         "a": "경기 부천시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -409,8 +409,8 @@ const lottoData = [
         "n": "돈벼락",
         "m": "수동",
         "a": "경기 군포시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -418,8 +418,8 @@ const lottoData = [
         "n": "노랑공인중개사사무소",
         "m": "수동",
         "a": "충북 청주시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -427,8 +427,8 @@ const lottoData = [
         "n": "대박복권 성점점",
         "m": "수동",
         "a": "충남 천안시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -436,8 +436,8 @@ const lottoData = [
         "n": "춘향로또",
         "m": "수동",
         "a": "전북 남원시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -445,8 +445,8 @@ const lottoData = [
         "n": "목화휴게소",
         "m": "수동",
         "a": "경남 사천시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -463,8 +463,8 @@ const lottoData = [
         "n": "복권방",
         "m": "수동",
         "a": "서울 강동구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -472,8 +472,8 @@ const lottoData = [
         "n": "금곡로",
         "m": "수동",
         "a": "경기 수원시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -481,8 +481,8 @@ const lottoData = [
         "n": "남창 복권방",
         "m": "수동",
         "a": "전남 해남군",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -490,8 +490,8 @@ const lottoData = [
         "n": "희망전파사",
         "m": "수동",
         "a": "전남 해남군",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -499,8 +499,8 @@ const lottoData = [
         "n": "추섬로또",
         "m": "자동",
         "a": "전남 완도군",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -508,8 +508,8 @@ const lottoData = [
         "n": "성화복권바",
         "m": "자동",
         "a": "전남 완도군",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -517,8 +517,8 @@ const lottoData = [
         "n": "하나로수퍼",
         "m": "반자동",
         "a": "서울 동대문구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -526,8 +526,8 @@ const lottoData = [
         "n": "세명복권",
         "m": "반자동",
         "a": "서울 마포구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -535,8 +535,8 @@ const lottoData = [
         "n": "행운당",
         "m": "반자동",
         "a": "서울 노원구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -544,8 +544,8 @@ const lottoData = [
         "n": "복권나라",
         "m": "반자동",
         "a": "서울 성동구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -553,8 +553,8 @@ const lottoData = [
         "n": "복권방",
         "m": "수동",
         "a": "부산 사하구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -562,8 +562,8 @@ const lottoData = [
         "n": "천하명당복권",
         "m": "수동",
         "a": "대구 북구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -571,8 +571,8 @@ const lottoData = [
         "n": "명동럭키로또",
         "m": "수동",
         "a": "인천 연수구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -580,8 +580,8 @@ const lottoData = [
         "n": "광주도서유통",
         "m": "반자동",
         "a": "광주 남구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -589,8 +589,8 @@ const lottoData = [
         "n": "행운복권방",
         "m": "반자동",
         "a": "경기 김포시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -598,8 +598,8 @@ const lottoData = [
         "n": "민복권",
         "m": "반자동",
         "a": "경기 동두천시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -607,8 +607,8 @@ const lottoData = [
         "n": "완산로또방",
         "m": "반자동",
         "a": "경북 영천시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -616,8 +616,8 @@ const lottoData = [
         "n": "스마일",
         "m": "반자동",
         "a": "경남 양산시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -625,8 +625,8 @@ const lottoData = [
         "n": "하프타임 함안산인점",
         "m": "반자동",
         "a": "경남 함안군",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -643,8 +643,8 @@ const lottoData = [
         "n": "흥건슈퍼",
         "m": "반자동",
         "a": "전북 전주시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -652,8 +652,8 @@ const lottoData = [
         "n": "민복권",
         "m": "반자동",
         "a": "동두천시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -661,8 +661,8 @@ const lottoData = [
         "n": "행운복권방",
         "m": "반자동",
         "a": "김포시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -670,8 +670,8 @@ const lottoData = [
         "n": "하나로슈퍼",
         "m": "수동",
         "a": "서울 동대문구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -679,8 +679,8 @@ const lottoData = [
         "n": "스파",
         "m": "자동",
         "a": "서울 노원구 동일로 1493 주공10단지종합상가111",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -688,8 +688,8 @@ const lottoData = [
         "n": "서재강변로또",
         "m": "자동",
         "a": "대구 달성군 서재로 172",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -697,8 +697,8 @@ const lottoData = [
         "n": "우리복권",
         "m": "자동",
         "a": "인천 남동구 논고개로123번길 17 109호",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -706,8 +706,8 @@ const lottoData = [
         "n": "황금복권방",
         "m": "자동",
         "a": "인천 연수구 컨벤시아대로 81 송도동 드림시티 113-2호",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -715,8 +715,8 @@ const lottoData = [
         "n": "또로또",
         "m": "자동",
         "a": "울산 남구 신정로68번길 47 1층 신화부동산",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -724,8 +724,8 @@ const lottoData = [
         "n": "황금복권마트",
         "m": "자동",
         "a": "경기 이천시 증신로325번길 5 1층",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -733,8 +733,8 @@ const lottoData = [
         "n": "한아름 복권",
         "m": "자동",
         "a": "경기 김포시 장차로 19 102호",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -742,8 +742,8 @@ const lottoData = [
         "n": "도원로또방",
         "m": "자동",
         "a": "경기 시흥시 은계중앙로 65 상가동 제1층 제1호",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -751,8 +751,8 @@ const lottoData = [
         "n": "봉담복자리복권과편의점",
         "m": "자동",
         "a": "경기 화성시 삼천병마로 1276",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -760,8 +760,8 @@ const lottoData = [
         "n": "세븐복권",
         "m": "자동",
         "a": "충북 증평군 초중6길 19 1층(세븐일레븐 내",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -769,8 +769,8 @@ const lottoData = [
         "n": "로또 계룡에스파",
         "m": "자동",
         "a": "충남 계룡시 대실남북3길 16 계룡 한라비발디센트럴 상가 5호",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -778,8 +778,8 @@ const lottoData = [
         "n": "로또복권보성점",
         "m": "자동",
         "a": "경북 포항시 북구 용흥로 126 보성아파트상가101호",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -787,8 +787,8 @@ const lottoData = [
         "n": "로또명당",
         "m": "자동",
         "a": "경북 의성군 중앙길 10-1 1층",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -796,8 +796,8 @@ const lottoData = [
         "n": "황금복권방",
         "m": "반자동",
         "a": "인천 연수구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -805,8 +805,8 @@ const lottoData = [
         "n": "우리복권",
         "m": "반자동",
         "a": "인천 남동구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -814,8 +814,8 @@ const lottoData = [
         "n": "황금복권마트",
         "m": "반자동",
         "a": "경기 이천시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -823,8 +823,8 @@ const lottoData = [
         "n": "한아름 복권",
         "m": "반자동",
         "a": "경기 김포시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -832,8 +832,8 @@ const lottoData = [
         "n": "세븐복권",
         "m": "반자동",
         "a": "충북 증평군",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -841,8 +841,8 @@ const lottoData = [
         "n": "또로또",
         "m": "반자동",
         "a": "울산 남구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -850,8 +850,8 @@ const lottoData = [
         "n": "서재강변로또",
         "m": "반자동",
         "a": "대구 달성군",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -859,8 +859,8 @@ const lottoData = [
         "n": "로또복권보성점",
         "m": "반자동",
         "a": "경북 포항시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -868,8 +868,8 @@ const lottoData = [
         "n": "로또명당",
         "m": "반자동",
         "a": "경북 의성군",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -877,8 +877,8 @@ const lottoData = [
         "n": "봉담복자리복권과편의점",
         "m": "반자동",
         "a": "경기 화성시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -886,8 +886,8 @@ const lottoData = [
         "n": "도원로또방",
         "m": "반자동",
         "a": "경기 시흥시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -895,8 +895,8 @@ const lottoData = [
         "n": "스파",
         "m": "반자동",
         "a": "서울 노원구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -904,8 +904,8 @@ const lottoData = [
         "n": "로또 계룡에스파",
         "m": "반자동",
         "a": "충남 계룡시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -913,8 +913,8 @@ const lottoData = [
         "n": "가판20호",
         "m": "수동",
         "a": "서울 송파구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -922,8 +922,8 @@ const lottoData = [
         "n": "오케이상사",
         "m": "수동",
         "a": "서울 서초구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -940,8 +940,8 @@ const lottoData = [
         "n": "로또복권판매소",
         "m": "수동",
         "a": "서울 마포구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -949,8 +949,8 @@ const lottoData = [
         "n": "요기어때",
         "m": "수동",
         "a": "부산 해운대구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -958,8 +958,8 @@ const lottoData = [
         "n": "노다지복권방백운점",
         "m": "수동",
         "a": "광주 남구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -967,8 +967,8 @@ const lottoData = [
         "n": "순살로복권",
         "m": "수동",
         "a": "경기 의왕시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -976,8 +976,8 @@ const lottoData = [
         "n": "아이지에이마트",
         "m": "수동",
         "a": "경기 안산시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -985,8 +985,8 @@ const lottoData = [
         "n": "로또명당 풍세산단점",
         "m": "수동",
         "a": "충남 천안시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -994,8 +994,8 @@ const lottoData = [
         "n": "성심상회",
         "m": "수동",
         "a": "경북 포항시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1003,8 +1003,8 @@ const lottoData = [
         "n": "천하명당복권",
         "m": "수동",
         "a": "제주 서귀포시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1012,8 +1012,8 @@ const lottoData = [
         "n": "행운복권방",
         "m": "반자동",
         "a": "서울 도봉구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1021,8 +1021,8 @@ const lottoData = [
         "n": "꿈이있는 로또점",
         "m": "반자동",
         "a": "복권판매점",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1030,8 +1030,8 @@ const lottoData = [
         "n": "돈벼락맞는곳 부산서면점",
         "m": "반자동",
         "a": "부산 부산진구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1039,8 +1039,8 @@ const lottoData = [
         "n": "복권명당",
         "m": "자동",
         "a": "서부점",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1048,8 +1048,8 @@ const lottoData = [
         "n": "다들복권방",
         "m": "수동",
         "a": "경기 부천시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1057,8 +1057,8 @@ const lottoData = [
         "n": "로또복권편의점",
         "m": "수동",
         "a": "경기 수원시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1066,8 +1066,8 @@ const lottoData = [
         "n": "오남 로또택배",
         "m": "수동",
         "a": "경기 남양주시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1075,8 +1075,8 @@ const lottoData = [
         "n": "지바",
         "m": "반자동",
         "a": "경기 광명시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1084,8 +1084,8 @@ const lottoData = [
         "n": "복권맛집",
         "m": "반자동",
         "a": "경기 포천시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1093,8 +1093,8 @@ const lottoData = [
         "n": "대관령복권방",
         "m": "반자동",
         "a": "강원 평창군",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1102,8 +1102,8 @@ const lottoData = [
         "n": "복권나라",
         "m": "반자동",
         "a": "전북 군산시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1111,8 +1111,8 @@ const lottoData = [
         "n": "웨이스탑",
         "m": "반자동",
         "a": "전농점",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1120,8 +1120,8 @@ const lottoData = [
         "n": "돈벼락복권방",
         "m": "반자동",
         "a": "대구 북구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1129,8 +1129,8 @@ const lottoData = [
         "n": "로또복권방",
         "m": "반자동",
         "a": "경기 성남시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1138,8 +1138,8 @@ const lottoData = [
         "n": "굿럭커피",
         "m": "수동",
         "a": "서울 은평구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1147,8 +1147,8 @@ const lottoData = [
         "n": "24시슈퍼",
         "m": "수동",
         "a": "인천 부평구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1156,8 +1156,8 @@ const lottoData = [
         "n": "해피+24시편의점",
         "m": "수동",
         "a": "광주 북구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1165,8 +1165,8 @@ const lottoData = [
         "n": "복권나라",
         "m": "수동",
         "a": "광주 북구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1174,8 +1174,8 @@ const lottoData = [
         "n": "복권명당",
         "m": "수동",
         "a": "대전 서구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1183,8 +1183,8 @@ const lottoData = [
         "n": "대전우표사",
         "m": "수동",
         "a": "대전 동구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1192,8 +1192,8 @@ const lottoData = [
         "n": "평택포승점로또",
         "m": "수동",
         "a": "경기 평택시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1201,8 +1201,8 @@ const lottoData = [
         "n": "복권백화점",
         "m": "수동",
         "a": "경기 파주시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1210,8 +1210,8 @@ const lottoData = [
         "n": "북부슈퍼",
         "m": "수동",
         "a": "경기 의정부시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1219,8 +1219,8 @@ const lottoData = [
         "n": "한국슈퍼",
         "m": "수동",
         "a": "경기 부천시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1228,8 +1228,8 @@ const lottoData = [
         "n": "로또복권",
         "m": "수동",
         "a": "경북 김천시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1237,8 +1237,8 @@ const lottoData = [
         "n": "땅땅낚시",
         "m": "수동",
         "a": "경남 거제시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1246,8 +1246,8 @@ const lottoData = [
         "n": "드림스튜디오",
         "m": "수동",
         "a": "서울 은평구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1255,8 +1255,8 @@ const lottoData = [
         "n": "대박로또점",
         "m": "수동",
         "a": "경기 화성시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1264,8 +1264,8 @@ const lottoData = [
         "n": "굿럭커피",
         "m": "수동",
         "a": "서울 은평구 불광천길 536",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1273,8 +1273,8 @@ const lottoData = [
         "n": "24시슈퍼",
         "m": "수동",
         "a": "인천 부평구 열우물로 111-1",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1282,8 +1282,8 @@ const lottoData = [
         "n": "해피+24시편의점",
         "m": "자동",
         "a": "광주 북구 하서로 330",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1291,8 +1291,8 @@ const lottoData = [
         "n": "복권나라",
         "m": "자동",
         "a": "광주 북구 동문대로134번길 5",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1300,8 +1300,8 @@ const lottoData = [
         "n": "대전우표사",
         "m": "자동",
         "a": "대전 동구 중앙로204번길 16-1",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1309,8 +1309,8 @@ const lottoData = [
         "n": "복권명당",
         "m": "자동",
         "a": "대전 서구 만년남로3번길 164",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1318,8 +1318,8 @@ const lottoData = [
         "n": "복권백화점",
         "m": "자동",
         "a": "경기 파주시 평화로 70",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1327,8 +1327,8 @@ const lottoData = [
         "n": "북부슈퍼",
         "m": "수동",
         "a": "경기 의정부시 가능로125번길 22",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1336,8 +1336,8 @@ const lottoData = [
         "n": "한국슈퍼",
         "m": "수동",
         "a": "경기 부천시 원종로35번길 24 한울빌리지 상가101호",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1345,8 +1345,8 @@ const lottoData = [
         "n": "평택포승점로또",
         "m": "수동",
         "a": "경기 평택시 여술로 24 CU편의점 내",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1354,8 +1354,8 @@ const lottoData = [
         "n": "로또복권",
         "m": "수동",
         "a": "경북 김천시 신음새동네길 13",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1363,8 +1363,8 @@ const lottoData = [
         "n": "땅땅낚시",
         "m": "수동",
         "a": "경남 거제시 거제남서로 3172",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1372,8 +1372,8 @@ const lottoData = [
         "n": "드림스튜디오",
         "m": "수동",
         "a": "서울 은평구 서오릉로 160 1층",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1381,8 +1381,8 @@ const lottoData = [
         "n": "대박로또점",
         "m": "수동",
         "a": "경기 화성시 발안로 101 108호",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1390,8 +1390,8 @@ const lottoData = [
         "n": "정안 복권방",
         "m": "반자동",
         "a": "서울 노원구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1399,8 +1399,8 @@ const lottoData = [
         "n": "돈방석",
         "m": "반자동",
         "a": "인천 남동구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1408,8 +1408,8 @@ const lottoData = [
         "n": "우리들공업탑점",
         "m": "반자동",
         "a": "울산 남구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1417,8 +1417,8 @@ const lottoData = [
         "n": "서울로또",
         "m": "반자동",
         "a": "경기 의정부시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1426,8 +1426,8 @@ const lottoData = [
         "n": "양평 대명점",
         "m": "반자동",
         "a": "경기 양평군",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1435,8 +1435,8 @@ const lottoData = [
         "n": "153나눔로또편의점",
         "m": "반자동",
         "a": "경기 성남시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1444,8 +1444,8 @@ const lottoData = [
         "n": "카베",
         "m": "반자동",
         "a": "경기 부천시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1453,8 +1453,8 @@ const lottoData = [
         "n": "지에스25 진동에이스점",
         "m": "반자동",
         "a": "경남 창원시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1471,8 +1471,8 @@ const lottoData = [
         "n": "부자상회",
         "m": "반자동",
         "a": "경기 이천시·중복",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -1480,8 +1480,8 @@ const lottoData = [
         "n": "원호대박복권",
         "m": "반자동",
         "a": "경북 구미시",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -2211,7 +2211,7 @@ const lottoData = [
             "id": "1198448343",
             "pan": 224.74,
             "tilt": 2.27,
-            "zoom": 1.0
+            "zoom": 1
         },
         "rounds": [
             {
@@ -2720,7 +2720,7 @@ const lottoData = [
             "id": "1202519408",
             "pan": 230.15,
             "tilt": 0.33,
-            "zoom": -1.0
+            "zoom": -1
         },
         "rounds": [
             {
@@ -4973,7 +4973,7 @@ const lottoData = [
             "id": "1170639962",
             "pan": 332.05,
             "tilt": 1.41,
-            "zoom": -3.0
+            "zoom": -3
         },
         "rounds": [
             {
@@ -8048,7 +8048,7 @@ const lottoData = [
             "id": "1198397843",
             "pan": 318.09,
             "tilt": -0.61,
-            "zoom": 0.0
+            "zoom": 0
         },
         "rounds": [
             {
@@ -9332,7 +9332,7 @@ const lottoData = [
             "id": "1188272977",
             "pan": 34.24,
             "tilt": 0.74,
-            "zoom": 0.0
+            "zoom": 0
         },
         "rounds": [
             {
@@ -10203,7 +10203,7 @@ const lottoData = [
             "id": "1179789585",
             "pan": 168.69,
             "tilt": -0.46,
-            "zoom": -2.0
+            "zoom": -2
         },
         "rounds": [
             {
@@ -13858,7 +13858,7 @@ const lottoData = [
             "id": "1166761988",
             "pan": 317.63,
             "tilt": 0.25,
-            "zoom": -3.0
+            "zoom": -3
         },
         "rounds": [
             {
@@ -16137,7 +16137,7 @@ const lottoData = [
             "id": "1202017794",
             "pan": 168.99,
             "tilt": -1.41,
-            "zoom": 3.0
+            "zoom": 3
         },
         "rounds": [
             {
@@ -19335,7 +19335,7 @@ const lottoData = [
             "id": "1204481175",
             "pan": 94.99,
             "tilt": 4.55,
-            "zoom": -3.0
+            "zoom": -3
         },
         "rounds": [
             {
@@ -20240,7 +20240,7 @@ const lottoData = [
         "pov": {
             "id": 1191260191,
             "pan": 106.21,
-            "tilt": 1.0,
+            "tilt": 1,
             "zoom": -1
         },
         "rounds": [
@@ -63619,8 +63619,8 @@ const lottoData = [
         "n": "5명 당첨",
         "m": "자동",
         "a": "경남 김해시 부원동 AM&PM",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -63628,8 +63628,8 @@ const lottoData = [
         "n": "삼척로데오점",
         "m": "자동",
         "a": "강원 삼척시 당저동 CU",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -63637,8 +63637,8 @@ const lottoData = [
         "n": "아산비발디",
         "m": "자동",
         "a": "충남 아산시 배방읍 북수리 GS25",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -63646,8 +63646,8 @@ const lottoData = [
         "n": "충남 1곳",
         "m": "자동",
         "a": "아산시 로또명당인주점",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -63655,8 +63655,8 @@ const lottoData = [
         "n": "북구 관음동 천하명당복권",
         "m": "자동",
         "a": "대구 1곳",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -63664,8 +63664,8 @@ const lottoData = [
         "n": "경남 1곳",
         "m": "자동",
         "a": "창원시 성산구 성원마트",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -64146,8 +64146,8 @@ const lottoData = [
         "n": "대전 대흥동 씨스페이스",
         "m": "수동",
         "a": "대흥상아",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -64702,8 +64702,8 @@ const lottoData = [
         "n": "40명",
         "m": "자동",
         "a": "부천시 원종동 CU(원종깨비점) 등 5곳으로 확인됐다.\n\n\n\n당첨번호 5개와 보너스번호를 맞힌 2등 당첨자는 지난주",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -64711,8 +64711,8 @@ const lottoData = [
         "n": "2장",
         "m": "자동",
         "a": "고양시 마두동 마두5번출구가판로또",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -65311,8 +65311,8 @@ const lottoData = [
         "n": "서울 도곡동 CU",
         "m": "자동",
         "a": "타워팰리스점",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -65320,8 +65320,8 @@ const lottoData = [
         "n": "2장",
         "m": "자동",
         "a": "수원시 매산로1가 천하명당복권방",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -65889,8 +65889,8 @@ const lottoData = [
         "n": "서울 한강로3가 캐논종합 등 3곳에서 나왔다. \n\n\n\n6개 당첨번호를 모두 맞힌 3명의 1등 당첨자",
         "m": "자동",
         "a": "자동 3",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -65898,8 +65898,8 @@ const lottoData = [
         "n": "구드림통신",
         "m": "자동",
         "a": "아산시 염치읍 석정리 굿타임24아산석정점",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -65907,8 +65907,8 @@ const lottoData = [
         "n": "고정 당첨금 5000원",
         "m": "자동",
         "a": "포항시 대도동 남부로또점 등 31곳에서 나왔다.\n\n\n\n당첨번호 5개가 일치한 3등은 1512명으로 163만원을 수령하게 된다. 당첨번호 4개를 맞힌 4등(고정 당첨금 5만원)은 7만6742명, 당첨번호 3개가 일치한 5등",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -65916,8 +65916,8 @@ const lottoData = [
         "n": "서울 한강로3가 캐논종합 등 3곳에서 나왔다. \n\n\n\n6개 당첨번호를 모두 맞힌 3명의 1등 당첨자",
         "m": "자동",
         "a": "자동 3",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -65925,8 +65925,8 @@ const lottoData = [
         "n": "구드림통신",
         "m": "자동",
         "a": "아산시 염치읍 석정리 굿타임24아산석정점",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -65934,8 +65934,8 @@ const lottoData = [
         "n": "고정 당첨금 5000원",
         "m": "자동",
         "a": "포항시 대도동 남부로또점 등 31곳에서 나왔다.\n\n\n\n당첨번호 5개가 일치한 3등은 1512명으로 163만원을 수령하게 된다. 당첨번호 4개를 맞힌 4등(고정 당첨금 5만원)은 7만6742명, 당첨번호 3개가 일치한 5등",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -68649,8 +68649,8 @@ const lottoData = [
         "n": "9명으로 전년도 5.6명에 비해 1.3명",
         "m": "수동",
         "a": "23.2%",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -69399,8 +69399,8 @@ const lottoData = [
         "n": "9명으로 전년도 5.6명에 비해 1.3명",
         "m": "수동",
         "a": "23.2%",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -69874,8 +69874,8 @@ const lottoData = [
         "n": "9명으로 전년도 5.6명에 비해 1.3명",
         "m": "수동",
         "a": "23.2%",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -74010,8 +74010,8 @@ const lottoData = [
         "n": "11) 이후 최근까지 104회 추첨에서 581명",
         "m": "수동",
         "a": "정확히 581게임",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -75519,8 +75519,8 @@ const lottoData = [
         "n": "7회",
         "m": "자동",
         "a": "범위 0~7.5회",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -75528,8 +75528,8 @@ const lottoData = [
         "n": "행운식품",
         "m": "반자동",
         "a": "서울 관악구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -75537,8 +75537,8 @@ const lottoData = [
         "n": "티에스네트웍스",
         "m": "반자동",
         "a": "서울 영등포구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -75546,8 +75546,8 @@ const lottoData = [
         "n": "서면로또",
         "m": "반자동",
         "a": "부산 부산진구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -75555,8 +75555,8 @@ const lottoData = [
         "n": "와우복권방",
         "m": "반자동",
         "a": "대전 중구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -75564,8 +75564,8 @@ const lottoData = [
         "n": "로또백화점 홍은점",
         "m": "반자동",
         "a": "서울 서대문구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -75573,8 +75573,8 @@ const lottoData = [
         "n": "복권나라",
         "m": "반자동",
         "a": "서울 성동구",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -75582,8 +75582,8 @@ const lottoData = [
         "n": "로터리복권방",
         "m": "반자동",
         "a": "부산 서구·당첨자 2명",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -75591,8 +75591,8 @@ const lottoData = [
         "n": "부산 범일동 부일카서비스",
         "m": "자동",
         "a": "10장",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -75600,8 +75600,8 @@ const lottoData = [
         "n": "2장",
         "m": "자동",
         "a": "고양시 백석동 주공슈퍼",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -75609,8 +75609,8 @@ const lottoData = [
         "n": "안산팔곡",
         "m": "자동",
         "a": "안산시 본오동 GS25",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -75618,8 +75618,8 @@ const lottoData = [
         "n": "4장",
         "m": "자동",
         "a": "안양시 비산2동 복권방",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -75627,8 +75627,8 @@ const lottoData = [
         "n": "동해발한점",
         "m": "자동",
         "a": "강원 동해시 발한동 CU",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -75636,8 +75636,8 @@ const lottoData = [
         "n": "엘도라도복권전문점",
         "m": "자동",
         "a": "서울 광진구 중곡동",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -75645,8 +75645,8 @@ const lottoData = [
         "n": "가판14호",
         "m": "자동",
         "a": "서울 중구 남창동",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -75654,8 +75654,8 @@ const lottoData = [
         "n": "동해복권전문점",
         "m": "자동",
         "a": "강원 동해시 발한동",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     },
     {
@@ -75663,8 +75663,8 @@ const lottoData = [
         "n": "세후 약 317억원",
         "m": "자동",
         "a": "로또복권 하대점(경남 진주시 하대동)이다.  \n5개 번호와 보너스 번호를 맞힌 2등은 67명으로 당첨금은 4777만6552원을 받는다. 5개 번호를 맞힌 3등은 2328명으로 당첨금은137만5013원이다.  \n번호 4개를 맞혀 5만원을 받는 4등은 11만4850명, 번호 3개를 맞혀 5000원을 받는 5등 당첨자는 187만6933명이다.  \n이번 로또 852회 1등 당첨금액은 2017년 10월 로또 778회 이후 2년 만의 최고 금액이다. 당시 1등 당첨자는 총 3명으로 각각 62억원의 당첨금을 받아갔다.\n역대 로또 최고 당첨액수 407억이다. 춘천에 거주하는 경찰관 A씨는 2003년 단독으로 로또 19회 1등에 당첨됐다. 당시 이전 당첨금이 이월되면서 A씨가 407억2295만원",
-        "lat": 0.0,
-        "lng": 0.0,
+        "lat": 0,
+        "lng": 0,
         "verified": false
     }
 ];
