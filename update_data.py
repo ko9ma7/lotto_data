@@ -4,6 +4,7 @@
 import os
 import re
 import json
+import time
 import random
 import requests
 from bs4 import BeautifulSoup
@@ -45,67 +46,69 @@ def get_latest_round():
         return 0
 
 def fetch_winning_numbers(draw_no):
-    # 1순위: 동행복권 API (헤더를 반드시 포함시켜 보안 차단 방지)
-    url_api = f"https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo={draw_no}"
+    # [핵심 수정] 찾아주신 레퍼런스와 100% 동일한 방식: 동행복권 HTML 결과 페이지 직접 스크래핑
+    url = f"https://dhlottery.co.kr/gameResult.do?method=byWin&drwNo={draw_no}"
     try:
-        r = requests.get(url_api, headers=get_headers(), timeout=10)
-        data = r.json()
-        if data.get("returnValue") == "success":
-            nums = [data[f"drwtNo{i}"] for i in range(1, 7)]
-            nums.append(data["bnusNo"])
-            return nums
-    except: pass
-
-    # 2순위: 네이버 검색 백업
-    url_naver = f"https://search.naver.com/search.naver?query={requests.utils.quote(f'로또 {draw_no}회 당첨번호')}"
-    try:
-        r = requests.get(url_naver, headers=get_headers(), timeout=10)
+        r = requests.get(url, headers=get_headers(), timeout=10)
         soup = BeautifulSoup(r.text, "html.parser")
-        text = soup.get_text(separator=" ")
 
-        pattern = r'(?:당첨번호|당첨 번호)\D{0,15}?(\d{1,2})\D{1,5}?(\d{1,2})\D{1,5}?(\d{1,2})\D{1,5}?(\d{1,2})\D{1,5}?(\d{1,2})\D{1,5}?(\d{1,2})'
-        m = re.search(pattern, text)
-        if m:
-            nums = [int(m.group(i)) for i in range(1, 7)]
-            search_region = text[max(0, m.start()-100):m.end()+300]
-            bonus_m = re.search(r'보너스\s*번호\s*[:：]?\s*(?<!\d)(\d{1,2})(?!\d|등)', search_region)
-            if not bonus_m: bonus_m = re.search(r'보너스\D{0,15}?(?<!\d)(\d{1,2})(?!\d|등)', text)
-            if bonus_m: 
-                bonus = int(bonus_m.group(1))
-                if bonus not in nums: nums.append(bonus)
-            return nums
+        # 레퍼런스의 태그 셀렉터(div.num.win span.ball_645) 그대로 적용
+        balls = soup.select('div.num.win span.ball_645')
+        if len(balls) == 6:
+            nums = [int(ball.text.strip()) for ball in balls]
+            
+            # 보너스 번호 태그 셀렉터 적용
+            bonus_ball = soup.select_one('div.num.bonus span.ball_645')
+            if bonus_ball:
+                nums.append(int(bonus_ball.text.strip()))
+                return nums
     except: pass
     return None
 
-def fetch_stores_naver_news(draw_no):
+def fetch_stores_news(draw_no):
     stores_map = {}
     queries = [f"로또 {draw_no}회 1등 배출점", f"로또 {draw_no}회 1등 판매점"]
     links = []
     
+    # 1. 네이버 뉴스 우선 탐색
     for query in queries:
         url = f"https://search.naver.com/search.naver?where=news&query={requests.utils.quote(query)}&sort=1"
         try:
-            r = requests.get(url, headers=get_headers(), timeout=10)
+            r = requests.get(url, headers=get_headers(), timeout=5)
             soup = BeautifulSoup(r.text, "html.parser")
             for a in soup.find_all('a', href=True):
                 href = a['href']
-                # n.news.naver.com 등 네이버 뉴스 구조 변경 완벽 대응
                 if ('news.naver.com' in href or 'n.news.naver.com' in href) and 'article' in href:
                     if href not in links: links.append(href)
             if len(links) >= 3: break
         except: continue
 
+    # 2. 다음 뉴스 탐색 (네이버가 차단했을 때 백업)
     if not links:
-        print("  ⚠️ 네이버 뉴스에서 1등 배출점/판매점 관련 기사를 아직 찾지 못했습니다.")
+        for query in queries:
+            url = f"https://search.daum.net/search?w=news&q={requests.utils.quote(query)}"
+            try:
+                r = requests.get(url, headers=get_headers(), timeout=5)
+                soup = BeautifulSoup(r.text, "html.parser")
+                for a in soup.find_all('a', href=True):
+                    href = a['href']
+                    if 'v.daum.net/v/' in href:
+                        if href not in links: links.append(href)
+                if len(links) >= 3: break
+            except: continue
+
+    if not links:
+        print("  ⚠️ 포털(네이버/다음) 뉴스에서 1등 배출점 관련 기사를 찾지 못했습니다.")
         return []
 
     blacklist = ["홈페이지", "뉴스", "기자", "기사", "동행복권", "인터넷", "판매점", "당첨", "연합뉴스"]
     for link in links[:5]:
         try:
-            nr = requests.get(link, headers=get_headers(), timeout=10)
+            nr = requests.get(link, headers=get_headers(), timeout=5)
             nr.encoding = 'utf-8'
             nsoup = BeautifulSoup(nr.text, "html.parser")
-            content = nsoup.find('article', id='dic_area') or nsoup.find('div', id='dic_area')
+            
+            content = nsoup.find('article') or nsoup.find('div', id='dic_area') or nsoup.find('div', class_='article_view')
             if not content: continue
             
             text = content.get_text(separator="\n")
@@ -176,10 +179,10 @@ def main():
                 print(f"  ✅ 당첨번호 복구 완료: {nums}")
                 unsaved_updates += 1
             else:
-                print(f"  ❌ 당첨번호 수집 실패 (API 및 네이버 검색 모두 실패)")
+                print(f"  ❌ 당첨번호 수집 실패 (웹페이지 크롤링 차단됨)")
 
         if missing_store:
-            stores = fetch_stores_naver_news(draw_no)
+            stores = fetch_stores_news(draw_no)
             if stores:
                 for st in stores:
                     is_online = "인터넷" in st["n"] or "사이트" in st["m"] or "dhlottery" in st["n"].lower()
@@ -192,6 +195,10 @@ def main():
                     store_data.append({"r": draw_no, "n": st["n"], "m": st["m"], "a": st["a"], "lat": lat, "lng": lng, "verified": is_online})
                 print(f"  ✅ 1등 판매점 {len(stores)}곳 복구 완료")
                 unsaved_updates += 1
+
+        # [핵심 추가] 서버 부담 완화 및 차단 방지를 위한 1초 대기 (마지막 회차 제외)
+        if draw_no < latest_round:
+            time.sleep(1)
 
     if unsaved_updates > 0:
         store_data.sort(key=lambda x: x.get('r', 0) if isinstance(x, dict) else 0, reverse=True)
