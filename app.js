@@ -819,6 +819,16 @@
                 <ul>${history}</ul>
             </details>`;
         popup.querySelector('.popup-copy').addEventListener('click', () => copyText(store.address, '판매점 주소를 복사했습니다.'));
+        popup.querySelector('.popup-history').addEventListener('toggle', (event) => {
+            if (!event.currentTarget.open || !state.map) return;
+            window.setTimeout(() => {
+                const topPadding = Math.min(480, Math.round(elements.mapCanvas.clientHeight * 0.86));
+                state.map.panInside([store.lat, store.lng], {
+                    paddingTopLeft: [24, topPadding],
+                    paddingBottomRight: [24, 36]
+                });
+            }, 60);
+        });
         return popup;
     }
 
