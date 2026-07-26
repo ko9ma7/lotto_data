@@ -1,94 +1,249 @@
-/* 파일경로: predict.js */
-
 class LottoPredictor {
     constructor(historyData = {}) {
         this.historyData = historyData;
-        this.frequencyMap = new Map();
-        this.recentFreqMap = new Map();
-        
-        for (let i = 1; i <= 45; i++) {
-            this.frequencyMap.set(i, 0);
-            this.recentFreqMap.set(i, 0);
-        }
-        
-        this.analyzeHistory();
-    }
-
-    analyzeHistory() {
-        if (!this.historyData || Object.keys(this.historyData).length === 0) return;
-
-        const sortedRounds = Object.keys(this.historyData).map(Number).sort((a, b) => b - a);
-        sortedRounds.forEach((drawNo, index) => {
-            const numbers = this.historyData[drawNo];
-            if (Array.isArray(numbers) && numbers.length >= 6) {
-                const mainNumbers = numbers.slice(0, 6);
-                mainNumbers.forEach(num => {
-                    if (this.frequencyMap.has(num)) this.frequencyMap.set(num, this.frequencyMap.get(num) + 1);
-                    if (index < 10 && this.recentFreqMap.has(num)) this.recentFreqMap.set(num, this.recentFreqMap.get(num) + 1);
-                });
-            }
+        this.rounds = Object.keys(historyData)
+            .map(Number)
+            .filter(Number.isFinite)
+            .sort((a, b) => b - a);
+        this.latestRound = this.rounds[0] || 0;
+        this.frequency = this.buildFrequency(this.rounds);
+        this.recentFrequency = this.buildFrequency(this.rounds.slice(0, 20));
+        this.gaps = this.buildGaps();
+        this.drawMetrics = this.rounds.map((round) => {
+            const numbers = this.getDraw(round);
+            return {
+                round,
+                sum: numbers.reduce((total, number) => total + number, 0),
+                odd: numbers.filter((number) => number % 2).length,
+                ac: this.calculateAC(numbers)
+            };
         });
     }
 
-    shuffle(array) {
-        let currentIndex = array.length, randomIndex;
-        while (currentIndex !== 0) {
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
-            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-        }
-        return array;
+    getDraw(round) {
+        const draw = this.historyData[round] || this.historyData[String(round)] || [];
+        return Array.isArray(draw) ? draw.slice(0, 6).map(Number).sort((a, b) => a - b) : [];
     }
 
-    generateSingle(algo) {
-        let pool = new Set();
-        const allNums = Array.from({length: 45}, (_, i) => i + 1);
-        
-        const sortedOverall = Array.from(this.frequencyMap.entries()).sort((a, b) => b[1] - a[1]);
-        const sortedRecent = Array.from(this.recentFreqMap.entries()).sort((a, b) => b[1] - a[1]);
-
-        // 데이터가 없으면 무조건 랜덤으로 Fallback
-        if (sortedOverall.length === 0 || sortedOverall[0][1] === 0) algo = 'random';
-
-        const hotOverall = sortedOverall.slice(0, 15).map(x => x[0]);
-        const coldOverall = sortedOverall.slice(-15).map(x => x[0]);
-        const hotRecent = sortedRecent.slice(0, 15).map(x => x[0]);
-
-        if (algo === 'balanced') {
-            this.shuffle(hotOverall).slice(0, 2).forEach(n => pool.add(n));
-            this.shuffle(coldOverall).slice(0, 2).forEach(n => pool.add(n));
-        } else if (algo === 'recent_trend') {
-            this.shuffle(hotRecent).slice(0, 4).forEach(n => pool.add(n));
-        } else if (algo === 'hot_cold') {
-            this.shuffle(hotOverall).slice(0, 3).forEach(n => pool.add(n));
-            this.shuffle(coldOverall).slice(0, 3).forEach(n => pool.add(n));
-        }
-
-        // 남은 자리는 전체에서 랜덤 추출
-        let available = this.shuffle(allNums);
-        for (let num of available) {
-            if (pool.size >= 6) break;
-            pool.add(num);
-        }
-
-        return Array.from(pool).slice(0, 6).sort((a, b) => a - b);
+    buildFrequency(rounds) {
+        const counts = Array(46).fill(0);
+        rounds.forEach((round) => this.getDraw(round).forEach((number) => {
+            if (number >= 1 && number <= 45) counts[number] += 1;
+        }));
+        return counts;
     }
 
-    // 지정된 개수만큼 게임 생성
-    generateMultiple(count, algo) {
+    buildGaps() {
+        const gaps = Array(46).fill(this.rounds.length);
+        this.rounds.forEach((round, index) => this.getDraw(round).forEach((number) => {
+            if (gaps[number] === this.rounds.length) gaps[number] = index;
+        }));
+        return gaps;
+    }
+
+    randomIndex(length) {
+        if (length <= 1) return 0;
+        if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+            const max = Math.floor(0x100000000 / length) * length;
+            const buffer = new Uint32Array(1);
+            do crypto.getRandomValues(buffer); while (buffer[0] >= max);
+            return buffer[0] % length;
+        }
+        return Math.floor(Math.random() * length);
+    }
+
+    weightedPick(pool, weightFor) {
+        const weighted = pool.map((number) => ({
+            number,
+            weight: Math.max(0.01, Number(weightFor(number)) || 0.01)
+        }));
+        const total = weighted.reduce((sum, item) => sum + item.weight, 0);
+        let target = (this.randomIndex(1_000_000) / 1_000_000) * total;
+        for (const item of weighted) {
+            target -= item.weight;
+            if (target <= 0) return item.number;
+        }
+        return weighted.at(-1).number;
+    }
+
+    getWeight(number, mode) {
+        const totalMax = Math.max(...this.frequency.slice(1), 1);
+        const recentMax = Math.max(...this.recentFrequency.slice(1), 1);
+        const frequencyScore = this.frequency[number] / totalMax;
+        const recentScore = this.recentFrequency[number] / recentMax;
+        const overdueScore = Math.min(this.gaps[number] / 25, 1);
+
+        if (mode === 'trend') return 0.25 + recentScore * 1.75;
+        if (mode === 'overdue') return 0.25 + overdueScore * 1.75;
+        if (mode === 'mix') return 0.35 + frequencyScore * 0.55 + recentScore * 0.55 + overdueScore * 0.55;
+        if (mode === 'balanced') {
+            const distanceFromMiddle = Math.abs(frequencyScore - 0.72);
+            return 1.5 - distanceFromMiddle;
+        }
+        return 1;
+    }
+
+    normalizeNumbers(numbers) {
+        return [...new Set((numbers || []).map(Number))]
+            .filter((number) => Number.isInteger(number) && number >= 1 && number <= 45)
+            .sort((a, b) => a - b);
+    }
+
+    isValidCandidate(numbers, options) {
+        if (numbers.length !== 6 || new Set(numbers).size !== 6) return false;
+        const sum = numbers.reduce((total, number) => total + number, 0);
+        if (sum < options.sumMin || sum > options.sumMax) return false;
+        const odd = numbers.filter((number) => number % 2).length;
+        if (options.oddCount !== null && odd !== options.oddCount) return false;
+        if (this.countConsecutivePairs(numbers) > options.maxConsecutivePairs) return false;
+        return true;
+    }
+
+    generate(options = {}) {
+        const normalized = {
+            mode: options.mode || 'balanced',
+            fixed: this.normalizeNumbers(options.fixed).slice(0, 5),
+            excluded: this.normalizeNumbers(options.excluded),
+            sumMin: Number.isFinite(Number(options.sumMin)) ? Number(options.sumMin) : 100,
+            sumMax: Number.isFinite(Number(options.sumMax)) ? Number(options.sumMax) : 180,
+            oddCount: options.oddCount === '' || options.oddCount === null || options.oddCount === undefined
+                ? null
+                : Number(options.oddCount),
+            maxConsecutivePairs: Number.isFinite(Number(options.maxConsecutivePairs))
+                ? Number(options.maxConsecutivePairs)
+                : 2
+        };
+        const excluded = new Set(normalized.excluded.filter((number) => !normalized.fixed.includes(number)));
+        const basePool = Array.from({ length: 45 }, (_, index) => index + 1)
+            .filter((number) => !excluded.has(number) && !normalized.fixed.includes(number));
+
+        if (basePool.length + normalized.fixed.length < 6) {
+            throw new Error('제외 번호가 너무 많아 6개 조합을 만들 수 없습니다.');
+        }
+
+        for (let attempt = 0; attempt < 2500; attempt += 1) {
+            const candidate = [...normalized.fixed];
+            const pool = [...basePool];
+            while (candidate.length < 6 && pool.length) {
+                const picked = this.weightedPick(pool, (number) => this.getWeight(number, normalized.mode));
+                candidate.push(picked);
+                pool.splice(pool.indexOf(picked), 1);
+            }
+            candidate.sort((a, b) => a - b);
+            if (this.isValidCandidate(candidate, normalized)) return candidate;
+        }
+
+        throw new Error('현재 조건을 동시에 만족하는 조합을 찾지 못했습니다. 합계나 홀짝 조건을 넓혀주세요.');
+    }
+
+    generateMultiple(count, options = {}) {
         const games = [];
-        for (let i = 0; i < count; i++) {
-            games.push(this.generateSingle(algo));
+        const seen = new Set();
+        const targetCount = Math.max(1, Math.min(10, Number(count) || 1));
+        let attempts = 0;
+        while (games.length < targetCount && attempts < targetCount * 40) {
+            attempts += 1;
+            const game = this.generate(options);
+            const key = game.join('-');
+            if (!seen.has(key)) {
+                seen.add(key);
+                games.push(game);
+            }
         }
         return games;
     }
 
-    getLatestDrawInfo() {
-        if (!this.historyData || Object.keys(this.historyData).length === 0) return { drawNo: '알 수 없음' };
-        const rounds = Object.keys(this.historyData).map(Number).sort((a, b) => b - a);
-        return { drawNo: rounds[0] || '최신' };
+    calculateAC(numbers) {
+        const sorted = this.normalizeNumbers(numbers);
+        const differences = new Set();
+        for (let i = 0; i < sorted.length; i += 1) {
+            for (let j = i + 1; j < sorted.length; j += 1) differences.add(sorted[j] - sorted[i]);
+        }
+        return Math.max(0, differences.size - (sorted.length - 1));
+    }
+
+    countConsecutivePairs(numbers) {
+        const sorted = this.normalizeNumbers(numbers);
+        return sorted.slice(1).filter((number, index) => number - sorted[index] === 1).length;
+    }
+
+    percentile(value, values) {
+        if (!values.length) return 0;
+        return Math.round(values.filter((item) => item <= value).length / values.length * 100);
+    }
+
+    analyze(numbers) {
+        const selected = this.normalizeNumbers(numbers);
+        if (selected.length !== 6) throw new Error('분석할 번호 6개를 선택해주세요.');
+
+        const sum = selected.reduce((total, number) => total + number, 0);
+        const odd = selected.filter((number) => number % 2).length;
+        const high = selected.filter((number) => number >= 23).length;
+        const ac = this.calculateAC(selected);
+        const consecutivePairs = this.countConsecutivePairs(selected);
+        const endingCounts = selected.reduce((map, number) => {
+            const ending = number % 10;
+            map[ending] = (map[ending] || 0) + 1;
+            return map;
+        }, {});
+        let maxMatch = 0;
+        let maxMatchRound = null;
+        this.rounds.forEach((round) => {
+            const match = this.getDraw(round).filter((number) => selected.includes(number)).length;
+            if (match > maxMatch) {
+                maxMatch = match;
+                maxMatchRound = round;
+            }
+        });
+
+        const notes = [];
+        if (sum < 100 || sum > 180) notes.push('역대 조합에서 비교적 바깥쪽 합계 구간입니다.');
+        if (odd === 0 || odd === 6) notes.push('홀수 또는 짝수 한쪽으로만 구성됐습니다.');
+        if (high === 0 || high === 6) notes.push('낮은 수와 높은 수가 한쪽으로 치우쳤습니다.');
+        if (consecutivePairs >= 2) notes.push('연속 번호 쌍이 두 개 이상 포함됐습니다.');
+        if (Math.max(...Object.values(endingCounts)) >= 3) notes.push('같은 끝수가 세 개 이상 겹칩니다.');
+        if (!notes.length) notes.push('주요 형태 지표가 과도하게 한쪽으로 치우치지 않았습니다.');
+
+        const balanceScore = Math.max(0, Math.min(100,
+            100
+            - Math.abs(140 - sum) * 0.7
+            - Math.abs(3 - odd) * 8
+            - Math.abs(3 - high) * 6
+            - Math.max(0, consecutivePairs - 1) * 8
+            - Math.max(0, 7 - ac) * 4
+        ));
+
+        return {
+            numbers: selected,
+            sum,
+            odd,
+            even: 6 - odd,
+            high,
+            low: 6 - high,
+            ac,
+            consecutivePairs,
+            sumPercentile: this.percentile(sum, this.drawMetrics.map((item) => item.sum)),
+            maxMatch,
+            maxMatchRound,
+            balanceScore: Math.round(balanceScore),
+            notes,
+            numberDetails: selected.map((number) => ({
+                number,
+                total: this.frequency[number],
+                recent20: this.recentFrequency[number],
+                gap: this.gaps[number]
+            }))
+        };
+    }
+
+    getRankedNumbers(kind = 'hot', limit = 6) {
+        const numbers = Array.from({ length: 45 }, (_, index) => index + 1);
+        if (kind === 'cold') numbers.sort((a, b) => this.frequency[a] - this.frequency[b] || a - b);
+        else if (kind === 'overdue') numbers.sort((a, b) => this.gaps[b] - this.gaps[a] || a - b);
+        else numbers.sort((a, b) => this.frequency[b] - this.frequency[a] || a - b);
+        return numbers.slice(0, limit);
     }
 }
 
-// 전역 객체화
-window.predictor = new LottoPredictor(typeof LOTTO_HISTORY !== 'undefined' ? LOTTO_HISTORY : {});
+if (typeof window !== 'undefined') window.LottoPredictor = LottoPredictor;
+if (typeof module !== 'undefined' && module.exports) module.exports = LottoPredictor;

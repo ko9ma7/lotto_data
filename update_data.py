@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
-KAKAO_API_KEY = "a6b27b6dab16c7e3459bb9589bf1269d"
+KAKAO_API_KEY = os.environ.get("KAKAO_REST_API_KEY", "")
 
 def load_js_data(filepath, is_dict):
     if not os.path.exists(filepath): return {} if is_dict else []
@@ -76,6 +76,9 @@ def fetch_stores(draw_no):
     return stores
 
 def geocode(address):
+    if not KAKAO_API_KEY:
+        print("  ⚠️ KAKAO_REST_API_KEY가 없어 좌표 변환을 건너뜁니다.")
+        return 0.0, 0.0
     addr = re.sub(r"(\d+)억?", r"\1", address).rstrip("., ").strip()
     try:
         url = f"https://dapi.kakao.com/v2/local/search/address.json"

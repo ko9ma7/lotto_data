@@ -6,7 +6,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 
 const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36';
-const KAKAO_API_KEY = "a6b27b6dab16c7e3459bb9589bf1269d";
+const KAKAO_API_KEY = process.env.KAKAO_REST_API_KEY || '';
 
 function getLatestRound() {
     const firstDrawDate = new Date('2002-12-07T21:00:00+09:00');
@@ -189,6 +189,10 @@ async function fetchStoresFromNews(drawNo) {
 }
 
 async function geocode(address) {
+    if (!KAKAO_API_KEY) {
+        console.log('  ⚠️ KAKAO_REST_API_KEY가 없어 좌표 변환을 건너뜁니다.');
+        return { lat: 0.0, lng: 0.0 };
+    }
     let addr = address.replace(/(\d+)억?/g, '$1').replace(/[.,\s]+$/, '').trim();
     try {
         const url = `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(addr)}`;

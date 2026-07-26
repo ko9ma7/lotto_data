@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#123B75">
+    <meta name="description" content="역대 로또 6/45 데이터를 살펴보고, 조건별 번호 조합을 만들고, 내 기록을 기기에 저장하는 무료 데이터 도구입니다.">
+    <title>로또 나침반 45 | 번호 조합·분석·명당 지도</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <a class="skip-link" href="#main-content">본문 바로가기</a>
+
+    <svg class="svg-sprite" aria-hidden="true">
+        <symbol id="icon-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"/></symbol>
+        <symbol id="icon-home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10M9 20v-6h6v6"/></symbol>
+        <symbol id="icon-spark" viewBox="0 0 24 24"><path d="M12 3v4m0 10v4M3 12h4m10 0h4M5.6 5.6l2.8 2.8m7.2 7.2 2.8 2.8m0-12.8-2.8 2.8m-7.2 7.2-2.8 2.8"/></symbol>
+        <symbol id="icon-chart" viewBox="0 0 24 24"><path d="M4 20V10m6 10V4m6 16v-7m4 7H2"/></symbol>
+        <symbol id="icon-map" viewBox="0 0 24 24"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"/><path d="M9 3v15m6-12v15"/></symbol>
+        <symbol id="icon-bookmark" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4V3Z"/></symbol>
+        <symbol id="icon-moon" viewBox="0 0 24 24"><path d="M20 15.5A8 8 0 1 1 8.5 4 6.5 6.5 0 0 0 20 15.5Z"/></symbol>
+        <symbol id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+        <symbol id="icon-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol>
+        <symbol id="icon-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 20h16"/></symbol>
+        <symbol id="icon-location" viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/></symbol>
+        <symbol id="icon-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3m3 0-1 14H7L6 7m4 4v6m4-6v6"/></symbol>
+        <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10h.01"/></symbol>
+    </svg>
+
+    <header class="topbar">
+        <a class="brand" href="#home" data-view-link="home" aria-label="로또 나침반 45 홈">
+            <span class="brand-mark"><svg><use href="#icon-compass"></use></svg></span>
+            <span>
+                <strong>로또 나침반 45</strong>
+                <small>데이터로 살펴보고, 재미로 선택하세요</small>
+            </span>
+        </a>
+        <div class="topbar-actions">
+            <span id="data-status" class="data-status" role="status">데이터 확인 중</span>
+            <button id="theme-toggle" class="icon-button" type="button" aria-label="화면 테마 변경">
+                <svg class="theme-icon-moon"><use href="#icon-moon"></use></svg>
+                <svg class="theme-icon-sun"><use href="#icon-sun"></use></svg>
+            </button>
+        </div>
+    </header>
+
+    <aside class="sidebar" aria-label="주요 메뉴">
+        <nav class="main-nav">
+            <a href="#home" class="nav-link active" data-view-link="home">
+                <svg><use href="#icon-home"></use></svg><span>한눈에 보기</span>
+            </a>
+            <a href="#generator" class="nav-link" data-view-link="generator">
+                <svg><use href="#icon-spark"></use></svg><span>번호 만들기</span>
+            </a>
+            <a href="#analyzer" class="nav-link" data-view-link="analyzer">
+                <svg><use href="#icon-chart"></use></svg><span>내 번호 분석</span>
+            </a>
+            <a href="#map" class="nav-link" data-view-link="map">
+                <svg><use href="#icon-map"></use></svg><span>명당 지도</span>
+            </a>
+            <a href="#records" class="nav-link" data-view-link="records">
+                <svg><use href="#icon-bookmark"></use></svg><span>내 기록</span>
+            </a>
+        </nav>
+        <div class="sidebar-note">
+            <svg><use href="#icon-info"></use></svg>
+            <p>모든 조합의 1등 당첨 확률은 같습니다. 분석 점수는 당첨 확률이 아닌 과거 데이터 형태 비교입니다.</p>
+        </div>
+    </aside>
+
+    <main id="main-content" class="main-content" tabindex="-1">
+        <section id="view-home" class="view active" aria-labelledby="home-title">
+            <div class="hero">
+                <div class="hero-copy">
+                    <span class="eyebrow">LOTTO 6/45 DATA EXPLORER</span>
+                    <h1 id="home-title">감에만 맡기지 않고<br><span>내 선택을 이해하는 방법</span></h1>
+                    <p>역대 당첨번호의 형태를 살펴보고, 조건에 맞는 조합을 만들고, 마음에 든 번호는 이 기기에 저장해보세요.</p>
+                    <div class="hero-actions">
+                        <button class="button primary" type="button" data-go="generator">번호 조합 만들기</button>
+                        <button class="button secondary" type="button" data-go="analyzer">내 번호 분석하기</button>
+                    </div>
+                </div>
+                <article class="latest-card" aria-labelledby="latest-title">
+                    <div class="card-heading">
+                        <div>
+                            <span class="card-kicker">최근 데이터</span>
+                            <h2 id="latest-title"><b id="latest-round">-</b>회 당첨번호</h2>
+                        </div>
+                        <span id="data-date-label" class="soft-badge">자동 갱신</span>
+                    </div>
+                    <div id="latest-balls" class="ball-row large" aria-label="최근 당첨번호"></div>
+                    <div class="latest-footer">
+                        <span>다음 추첨까지</span>
+                        <strong id="countdown">계산 중</strong>
+                    </div>
+                </article>
+            </div>
+
+            <div class="metric-grid" aria-label="데이터 요약">
+                <article class="metric-card"><span>분석 회차</span><strong id="metric-rounds">-</strong><small>1회부터 누적</small></article>
+                <article class="metric-card"><span>판매점 기록</span><strong id="metric-stores">-</strong><small>중복 회차 포함</small></article>
+                <article class="metric-card"><span>내 생성 기록</span><strong id="metric-records">0</strong><small>이 브라우저에 저장</small></article>
+                <article class="metric-card"><span>저장 조합</span><strong id="metric-saved">0</strong><small>기기 안에서만 보관</small></article>
+            </div>
+
+            <div class="dashboard-grid">
+                <article class="panel">
+                    <div class="panel-heading">
+                        <div><span class="card-kicker">누적 출현</span><h2>많이·적게 나온 번호</h2></div>
+                        <span class="context-label">보너스 제외</span>
+                    </div>
+                    <div class="rank-block"><span>많이 나온 번호</span><div id="hot-numbers" class="rank-balls"></div></div>
+                    <div class="rank-block"><span>적게 나온 번호</span><div id="cold-numbers" class="rank-balls"></div></div>
+                    <div class="rank-block"><span>오래 쉬었던 번호</span><div id="overdue-numbers" class="rank-balls"></div></div>
+                </article>
+
+                <article class="panel guide-panel">
+                    <div class="panel-heading"><div><span class="card-kicker">QUICK START</span><h2>세 단계로 사용하기</h2></div></div>
+                    <ol class="step-list">
+                        <li><span>1</span><div><strong>방식을 고릅니다</strong><p>완전 무작위, 균형, 최근 흐름, 장기 미출현, 혼합 중 선택합니다.</p></div></li>
+                        <li><span>2</span><div><strong>조합을 살펴봅니다</strong><p>합계·홀짝·고저·연속수 같은 형태 지표를 바로 확인합니다.</p></div></li>
+                        <li><span>3</span><div><strong>마음에 들면 저장합니다</strong><p>생성 기록과 즐겨찾기는 서버가 아닌 현재 브라우저에 남습니다.</p></div></li>
+                    </ol>
+                </article>
+            </div>
+
+            <article class="panel history-explorer">
+                <div class="panel-heading">
+                    <div><span class="card-kicker">DRAW ARCHIVE</span><h2>역대 당첨번호 찾기</h2></div>
+                    <label class="round-search">회차
+                        <input id="round-search" type="number" min="1" placeholder="회차 입력">
+                        <button id="round-search-button" class="button secondary small" type="button">찾기</button>
+                    </label>
+                </div>
+                <div id="draw-history-list" class="draw-history-list"></div>
+            </article>
+
+            <div class="disclaimer">
+                <svg><use href="#icon-info"></use></svg>
+                <div><strong>분석은 예측이나 당첨 보장이 아닙니다.</strong><p>로또 추첨은 독립적인 무작위 사건입니다. 과거 빈도와 형태는 다음 당첨번호의 가능성을 높이지 않으며, 이 서비스는 데이터 탐색과 오락을 위한 도구입니다.</p></div>
+            </div>
+        </section>
+
+        <section id="view-generator" class="view" aria-labelledby="generator-title">
+            <div class="page-heading">
+                <div><span class="eyebrow">NUMBER STUDIO</span><h1 id="generator-title">나만의 번호 조합 만들기</h1><p>선택 방식과 범위를 정하면 조건을 만족하는 서로 다른 조합을 만듭니다.</p></div>
+            </div>
+
+            <div class="workspace-grid">
+                <form id="generator-form" class="panel control-panel">
+                    <fieldset>
+                        <legend>1. 추첨 방식</legend>
+                        <div class="mode-grid">
+                            <label class="mode-option"><input type="radio" name="mode" value="random"><span><strong>완전 무작위</strong><small>모든 번호를 같은 비중으로</small></span></label>
+                            <label class="mode-option"><input type="radio" name="mode" value="balanced" checked><span><strong>누적 균형</strong><small>누적 빈도의 중간 구간 중심</small></span></label>
+                            <label class="mode-option"><input type="radio" name="mode" value="trend"><span><strong>최근 흐름</strong><small>최근 20회 출현 비중 반영</small></span></label>
+                            <label class="mode-option"><input type="radio" name="mode" value="overdue"><span><strong>장기 미출현</strong><small>쉬었던 기간에 가중치</small></span></label>
+                            <label class="mode-option wide"><input type="radio" name="mode" value="mix"><span><strong>데이터 혼합</strong><small>누적·최근·미출현 지표를 함께 반영</small></span></label>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>2. 기본 조건</legend>
+                        <div class="form-grid">
+                            <label>게임 수<select id="game-count"><option value="1">1게임</option><option value="3">3게임</option><option value="5" selected>5게임</option><option value="10">10게임</option></select></label>
+                            <label>홀수 개수<select id="odd-count"><option value="">자동</option><option value="2">홀 2 · 짝 4</option><option value="3">홀 3 · 짝 3</option><option value="4">홀 4 · 짝 2</option></select></label>
+                            <label>최소 합계<input id="sum-min" type="number" min="21" max="255" value="100"></label>
+                            <label>최대 합계<input id="sum-max" type="number" min="21" max="255" value="180"></label>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>3. 포함·제외 번호 <span class="legend-note">선택 사항</span></legend>
+                        <div class="picker-tabs" role="tablist" aria-label="번호 선택 종류">
+                            <button id="fixed-tab" class="picker-tab active" type="button" data-picker-mode="fixed" role="tab" aria-selected="true">포함 번호 <span id="fixed-count">0</span></button>
+                            <button id="exclude-tab" class="picker-tab" type="button" data-picker-mode="excluded" role="tab" aria-selected="false">제외 번호 <span id="excluded-count">0</span></button>
+                        </div>
+                        <p id="picker-help" class="field-help">반드시 넣을 번호를 최대 5개 선택하세요.</p>
+                        <div id="generator-number-grid" class="number-grid compact" aria-describedby="picker-help"></div>
+                    </fieldset>
+
+                    <div id="generator-error" class="form-error" role="alert" hidden></div>
+                    <button class="button primary generate-button" type="submit"><svg><use href="#icon-spark"></use></svg>번호 조합 만들기</button>
+                </form>
+
+                <div class="results-column">
+                    <div class="panel results-panel">
+                        <div class="panel-heading">
+                            <div><span class="card-kicker">RESULT</span><h2>생성 결과</h2></div>
+                            <span id="result-mode-label" class="soft-badge">누적 균형</span>
+                        </div>
+                        <div id="generator-empty" class="empty-state">
+                            <svg><use href="#icon-compass"></use></svg>
+                            <strong>조건을 고르고 번호를 만들어보세요</strong>
+                            <p>결과와 분석 요약이 이곳에 표시됩니다.</p>
+                        </div>
+                        <div id="generated-games" class="generated-games" aria-live="polite"></div>
+                        <div id="result-actions" class="result-actions" hidden>
+                            <button id="copy-all" class="button secondary small" type="button"><svg><use href="#icon-copy"></use></svg>전체 복사</button>
+                            <button id="download-ticket" class="button secondary small" type="button"><svg><use href="#icon-download"></use></svg>이미지 저장</button>
+                        </div>
+                    </div>
+                    <div class="mini-disclaimer">생성 방식은 번호 선택의 재미와 조건 정리를 위한 것입니다. 어떤 방식도 1등 확률을 높이지 않습니다.</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-analyzer" class="view" aria-labelledby="analyzer-title">
+            <div class="page-heading">
+                <div><span class="eyebrow">MY NUMBER CHECK</span><h1 id="analyzer-title">내 번호를 과거 기록과 비교하기</h1><p>직접 고른 번호나 방금 만든 조합 6개를 선택해 형태와 과거 출현 기록을 확인합니다.</p></div>
+            </div>
+            <div class="analyzer-layout">
+                <div class="panel">
+                    <div class="selection-heading"><strong>번호 6개 선택</strong><span><b id="analysis-selected-count">0</b>/6</span></div>
+                    <div id="analysis-number-grid" class="number-grid"></div>
+                    <div class="selection-actions">
+                        <button id="analysis-clear" class="button ghost small" type="button">선택 초기화</button>
+                        <button id="analyze-button" class="button primary" type="button" disabled>선택 번호 분석</button>
+                    </div>
+                </div>
+                <div id="analysis-result" class="panel analysis-result">
+                    <div class="empty-state">
+                        <svg><use href="#icon-chart"></use></svg>
+                        <strong>번호를 선택하면 비교 결과가 나옵니다</strong>
+                        <p>당첨 가능성이 아닌 과거 데이터 안에서의 형태를 설명합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-map" class="view" aria-labelledby="map-title">
+            <div class="page-heading inline-heading">
+                <div><span class="eyebrow">WINNING STORES</span><h1 id="map-title">1등 판매점 기록 지도</h1><p>과거 1등 배출 기록을 모아 보고 가까운 판매점을 찾습니다.</p></div>
+                <button id="my-location" class="button secondary small" type="button"><svg><use href="#icon-location"></use></svg>내 위치로 이동</button>
+            </div>
+            <div class="map-layout">
+                <aside class="panel store-panel">
+                    <label class="search-label">판매점·주소 검색<input id="store-search" type="search" placeholder="예: 강남, 복권방"></label>
+                    <div class="store-summary"><strong id="unique-store-count">-</strong><span>개 판매점 기록</span></div>
+                    <div id="store-list" class="store-list"></div>
+                </aside>
+                <div class="map-wrap">
+                    <div id="map-canvas" class="map-canvas" aria-label="1등 판매점 지도"></div>
+                    <div id="map-message" class="map-message" role="status">지도를 준비하고 있습니다.</div>
+                </div>
+            </div>
+            <p class="source-note">판매점 정보는 과거 공개 기록을 모은 것이며 현재 영업 여부, 동일 상호, 이전 여부가 달라질 수 있습니다. 방문 전 지도 또는 판매점에 다시 확인하세요.</p>
+        </section>
+
+        <section id="view-records" class="view" aria-labelledby="records-title">
+            <div class="page-heading inline-heading">
+                <div><span class="eyebrow">LOCAL ARCHIVE</span><h1 id="records-title">내 기록 보관함</h1><p>생성 기록과 저장 조합은 현재 브라우저에만 저장됩니다.</p></div>
+                <div class="heading-actions">
+                    <button id="export-records" class="button secondary small" type="button"><svg><use href="#icon-download"></use></svg>백업 파일</button>
+                    <label class="button secondary small file-button">백업 불러오기<input id="import-records" type="file" accept="application/json"></label>
+                </div>
+            </div>
+
+            <div class="records-grid">
+                <article class="panel">
+                    <div class="panel-heading"><div><span class="card-kicker">FAVORITES</span><h2>저장한 조합</h2></div><span id="saved-count-label" class="context-label">0개</span></div>
+                    <div id="saved-list" class="record-list"></div>
+                </article>
+                <article class="panel">
+                    <div class="panel-heading">
+                        <div><span class="card-kicker">RECENT</span><h2>최근 생성 기록</h2></div>
+                        <button id="clear-history" class="icon-text-button danger" type="button"><svg><use href="#icon-trash"></use></svg>기록 비우기</button>
+                    </div>
+                    <div id="history-record-list" class="record-list"></div>
+                </article>
+            </div>
+            <div class="local-note">
+                <svg><use href="#icon-info"></use></svg>
+                <p><strong>저장 범위 안내</strong> 같은 PC라도 브라우저를 바꾸거나 방문 기록·사이트 데이터를 지우면 기록이 사라질 수 있습니다. 다른 기기로 옮기려면 백업 파일을 내려받아 불러오세요.</p>
+            </div>
+        </section>
+    </main>
+
+    <nav class="mobile-nav" aria-label="모바일 주요 메뉴">
+        <a href="#home" class="active" data-view-link="home"><svg><use href="#icon-home"></use></svg><span>홈</span></a>
+        <a href="#generator" data-view-link="generator"><svg><use href="#icon-spark"></use></svg><span>번호</span></a>
+        <a href="#analyzer" data-view-link="analyzer"><svg><use href="#icon-chart"></use></svg><span>분석</span></a>
+        <a href="#map" data-view-link="map"><svg><use href="#icon-map"></use></svg><span>명당</span></a>
+        <a href="#records" data-view-link="records"><svg><use href="#icon-bookmark"></use></svg><span>기록</span></a>
+    </nav>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <div id="capture-ticket" class="capture-ticket" aria-hidden="true"></div>
+
+    <script src="./lotto_history_data.js"></script>
+    <script src="./lotto_data.js"></script>
+    <script src="./predict.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+    <script src="./app.js" defer></script>
+</body>
+</html>
