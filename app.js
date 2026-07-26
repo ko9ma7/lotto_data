@@ -822,10 +822,22 @@
             showToast('이 판매점은 지도 좌표가 없습니다.');
             return;
         }
-        state.clusterer.zoomToShowLayer(entry.marker, () => {
-            state.map.setView(entry.marker.getLatLng(), 15);
-            entry.marker.openPopup();
-        });
+        let opened = false;
+        const reveal = () => {
+            if (opened) return;
+            if (state.map.hasLayer(entry.marker)) {
+                opened = true;
+                entry.marker.openPopup();
+                return;
+            }
+            state.clusterer.zoomToShowLayer(entry.marker, () => {
+                opened = true;
+                entry.marker.openPopup();
+            });
+        };
+        state.map.once('moveend', reveal);
+        state.map.setView(entry.marker.getLatLng(), 15);
+        window.setTimeout(reveal, 500);
         if (matchMedia('(max-width: 760px)').matches) setMapPane('map');
     }
 
