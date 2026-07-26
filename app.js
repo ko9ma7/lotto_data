@@ -649,7 +649,13 @@
             grouped.set(key, current);
         });
         return [...grouped.values()].map((store) => {
-            const history = [...store.history.values()].sort((a, b) => b.round - a.round || a.method.localeCompare(b.method, 'ko'));
+            const rawHistory = [...store.history.values()];
+            const roundsWithKnownMethod = new Set(rawHistory
+                .filter((item) => item.method !== '정보 없음')
+                .map((item) => item.round));
+            const history = rawHistory
+                .filter((item) => item.method !== '정보 없음' || !roundsWithKnownMethod.has(item.round))
+                .sort((a, b) => b.round - a.round || a.method.localeCompare(b.method, 'ko'));
             const methodCounts = history.reduce((counts, item) => {
                 counts[item.method] = (counts[item.method] || 0) + 1;
                 return counts;
