@@ -45,7 +45,48 @@ test('analysis returns stable structural metrics', () => {
     assert.equal(result.odd + result.even, 6);
     assert.equal(result.low + result.high, 6);
     assert.equal(result.numberDetails.length, 6);
+    assert.equal(result.zones, 5);
+    assert.ok(result.pairAffinity >= 0);
     assert.ok(result.balanceScore >= 0 && result.balanceScore <= 100);
+});
+
+test('advanced constraints reject overlapping or crowded shapes', () => {
+    const predictor = new LottoPredictor(history);
+    const options = {
+        sumMin: 21,
+        sumMax: 255,
+        oddCount: null,
+        highCount: null,
+        maxConsecutivePairs: 1,
+        maxSameEnding: 2,
+        acMin: 4,
+        acMax: 10,
+        minZones: 3,
+        maxLastOverlap: 1
+    };
+
+    assert.equal(predictor.isValidCandidate([1, 2, 3, 14, 25, 36], options), false);
+    assert.equal(predictor.isValidCandidate([1, 11, 21, 31, 40, 45], options), false);
+    assert.equal(predictor.isValidCandidate([1, 8, 16, 24, 33, 45], options), true);
+});
+
+test('pair and spread modes generate complete combinations', () => {
+    const predictor = new LottoPredictor(history);
+    ['pair', 'spread'].forEach((mode) => {
+        const game = predictor.generate({
+            mode,
+            sumMin: 21,
+            sumMax: 255,
+            maxConsecutivePairs: 5,
+            maxSameEnding: 6,
+            acMin: 0,
+            acMax: 10,
+            minZones: 1,
+            maxLastOverlap: 6
+        });
+        assert.equal(game.length, 6);
+        assert.equal(new Set(game).size, 6);
+    });
 });
 
 test('impossible conditions fail with a useful error', () => {

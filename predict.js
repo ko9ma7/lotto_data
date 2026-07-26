@@ -9,6 +9,7 @@ class LottoPredictor {
         this.frequency = this.buildFrequency(this.rounds);
         this.recentFrequency = this.buildFrequency(this.rounds.slice(0, 20));
         this.gaps = this.buildGaps();
+        this.pairFrequency = this.buildPairFrequency();
         this.drawMetrics = this.rounds.map((round) => {
             const numbers = this.getDraw(round);
             return {
@@ -41,6 +42,20 @@ class LottoPredictor {
         return gaps;
     }
 
+    buildPairFrequency() {
+        const pairs = Array.from({ length: 46 }, () => Array(46).fill(0));
+        this.rounds.forEach((round) => {
+            const draw = this.getDraw(round);
+            for (let i = 0; i < draw.length; i += 1) {
+                for (let j = i + 1; j < draw.length; j += 1) {
+                    pairs[draw[i]][draw[j]] += 1;
+                    pairs[draw[j]][draw[i]] += 1;
+                }
+            }
+        });
+        return pairs;
+    }
+
     randomIndex(length) {
         if (length <= 1) return 0;
         if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
@@ -66,7 +81,7 @@ class LottoPredictor {
         return weighted.at(-1).number;
     }
 
-    getWeight(number, mode) {
+    getWeight(number, mode, selected = []) {
         const totalMax = Math.max(...this.frequency.slice(1), 1);
         const recentMax = Math.max(...this.recentFrequency.slice(1), 1);
         const frequencyScore = this.frequency[number] / totalMax;
@@ -76,6 +91,19 @@ class LottoPredictor {
         if (mode === 'trend') return 0.25 + recentScore * 1.75;
         if (mode === 'overdue') return 0.25 + overdueScore * 1.75;
         if (mode === 'mix') return 0.35 + frequencyScore * 0.55 + recentScore * 0.55 + overdueScore * 0.55;
+        if (mode === 'pair') {
+            if (!selected.length) return 1;
+            const pairMax = Math.max(...selected.map((item) => this.pairFrequency[number][item]), 1);
+            const pairAverage = selected.reduce((sum, item) => sum + this.pairFrequency[number][item], 0) / selected.length;
+            return 0.35 + pairAverage / pairMax * 1.65;
+        }
+        if (mode === 'spread') {
+            const zone = Math.floor((number - 1) / 10);
+            const ending = number % 10;
+            const zoneUsed = selected.some((item) => Math.floor((item - 1) / 10) === zone);
+            const endingUsed = selected.some((item) => item % 10 === ending);
+            return 1.8 - (zoneUsed ? 0.55 : 0) - (endingUsed ? 0.35 : 0);
+        }
         if (mode === 'balanced') {
             const distanceFromMiddle = Math.abs(frequencyScore - 0.72);
             return 1.5 - distanceFromMiddle;
@@ -95,7 +123,21 @@ class LottoPredictor {
         if (sum < options.sumMin || sum > options.sumMax) return false;
         const odd = numbers.filter((number) => number % 2).length;
         if (options.oddCount !== null && odd !== options.oddCount) return false;
+        const high = numbers.filter((number) => number >= 23).length;
+        if (options.highCount !== null && high !== options.highCount) return false;
         if (this.countConsecutivePairs(numbers) > options.maxConsecutivePairs) return false;
+        const maxEndingCount = Math.max(...Object.values(numbers.reduce((counts, number) => {
+            counts[number % 10] = (counts[number % 10] || 0) + 1;
+            return counts;
+        }, {})));
+        if (maxEndingCount > options.maxSameEnding) return false;
+        const ac = this.calculateAC(numbers);
+        if (ac < options.acMin || ac > options.acMax) return false;
+        const zones = new Set(numbers.map((number) => Math.floor((number - 1) / 10))).size;
+        if (zones < options.minZones) return false;
+        const latestDraw = this.getDraw(this.latestRound);
+        const lastOverlap = numbers.filter((number) => latestDraw.includes(number)).length;
+        if (lastOverlap > options.maxLastOverlap) return false;
         return true;
     }
 
@@ -109,9 +151,17 @@ class LottoPredictor {
             oddCount: options.oddCount === '' || options.oddCount === null || options.oddCount === undefined
                 ? null
                 : Number(options.oddCount),
+            highCount: options.highCount === '' || options.highCount === null || options.highCount === undefined
+                ? null
+                : Number(options.highCount),
             maxConsecutivePairs: Number.isFinite(Number(options.maxConsecutivePairs))
                 ? Number(options.maxConsecutivePairs)
-                : 2
+                : 2,
+            maxSameEnding: Number.isFinite(Number(options.maxSameEnding)) ? Number(options.maxSameEnding) : 3,
+            acMin: Number.isFinite(Number(options.acMin)) ? Number(options.acMin) : 0,
+            acMax: Number.isFinite(Number(options.acMax)) ? Number(options.acMax) : 10,
+            minZones: Number.isFinite(Number(options.minZones)) ? Number(options.minZones) : 1,
+            maxLastOverlap: Number.isFinite(Number(options.maxLastOverlap)) ? Number(options.maxLastOverlap) : 6
         };
         const excluded = new Set(normalized.excluded.filter((number) => !normalized.fixed.includes(number)));
         const basePool = Array.from({ length: 45 }, (_, index) => index + 1)
@@ -125,7 +175,7 @@ class LottoPredictor {
             const candidate = [...normalized.fixed];
             const pool = [...basePool];
             while (candidate.length < 6 && pool.length) {
-                const picked = this.weightedPick(pool, (number) => this.getWeight(number, normalized.mode));
+                const picked = this.weightedPick(pool, (number) => this.getWeight(number, normalized.mode, candidate));
                 candidate.push(picked);
                 pool.splice(pool.indexOf(picked), 1);
             }
@@ -133,7 +183,7 @@ class LottoPredictor {
             if (this.isValidCandidate(candidate, normalized)) return candidate;
         }
 
-        throw new Error('현재 조건을 동시에 만족하는 조합을 찾지 못했습니다. 합계나 홀짝 조건을 넓혀주세요.');
+        throw new Error('현재 조건을 동시에 만족하는 조합을 찾지 못했습니다. 고급 조건을 한두 단계 넓혀주세요.');
     }
 
     generateMultiple(count, options = {}) {
@@ -181,6 +231,9 @@ class LottoPredictor {
         const high = selected.filter((number) => number >= 23).length;
         const ac = this.calculateAC(selected);
         const consecutivePairs = this.countConsecutivePairs(selected);
+        const zones = new Set(selected.map((number) => Math.floor((number - 1) / 10))).size;
+        const latestDraw = this.getDraw(this.latestRound);
+        const lastOverlap = selected.filter((number) => latestDraw.includes(number)).length;
         const endingCounts = selected.reduce((map, number) => {
             const ending = number % 10;
             map[ending] = (map[ending] || 0) + 1;
@@ -222,6 +275,9 @@ class LottoPredictor {
             low: 6 - high,
             ac,
             consecutivePairs,
+            zones,
+            lastOverlap,
+            pairAffinity: this.calculatePairAffinity(selected),
             sumPercentile: this.percentile(sum, this.drawMetrics.map((item) => item.sum)),
             maxMatch,
             maxMatchRound,
@@ -234,6 +290,19 @@ class LottoPredictor {
                 gap: this.gaps[number]
             }))
         };
+    }
+
+    calculatePairAffinity(numbers) {
+        const selected = this.normalizeNumbers(numbers);
+        const values = [];
+        for (let i = 0; i < selected.length; i += 1) {
+            for (let j = i + 1; j < selected.length; j += 1) {
+                values.push(this.pairFrequency[selected[i]][selected[j]]);
+            }
+        }
+        return values.length
+            ? Math.round(values.reduce((sum, value) => sum + value, 0) / values.length * 10) / 10
+            : 0;
     }
 
     getRankedNumbers(kind = 'hot', limit = 6) {

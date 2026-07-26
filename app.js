@@ -9,6 +9,8 @@
         balanced: '누적 균형',
         trend: '최근 흐름',
         overdue: '장기 미출현',
+        pair: '함께 나온 수',
+        spread: '구간 분산',
         mix: '데이터 혼합'
     };
 
@@ -25,7 +27,11 @@
         stores: aggregateStores(storeData),
         map: null,
         clusterer: null,
-        markers: new Map()
+        markers: new Map(),
+        userLocation: null,
+        userMarker: null,
+        userAccuracy: null,
+        mapPane: 'map'
     };
 
     const elements = {};
@@ -64,11 +70,14 @@
             'data-status', 'theme-toggle', 'latest-round', 'data-date-label', 'latest-balls',
             'countdown', 'metric-rounds', 'metric-stores', 'metric-records', 'metric-saved',
             'hot-numbers', 'cold-numbers', 'overdue-numbers', 'generator-form', 'game-count',
-            'odd-count', 'sum-min', 'sum-max', 'generator-number-grid', 'fixed-count',
+            'odd-count', 'sum-min', 'sum-max', 'high-count', 'max-last-overlap',
+            'max-same-ending', 'max-consecutive-pairs', 'ac-min', 'ac-max', 'min-zones',
+            'generator-number-grid', 'fixed-count',
             'excluded-count', 'picker-help', 'generator-error', 'generator-empty',
             'generated-games', 'result-mode-label', 'result-actions', 'copy-all',
             'download-ticket', 'analysis-number-grid', 'analysis-selected-count',
             'analysis-clear', 'analyze-button', 'analysis-result', 'my-location', 'store-search',
+            'store-tier-filter', 'store-method-filter', 'store-sort', 'location-status',
             'unique-store-count', 'store-list', 'map-canvas', 'map-message', 'export-records',
             'import-records', 'clear-history', 'saved-list', 'history-record-list',
             'saved-count-label', 'toast', 'capture-ticket', 'round-search',
@@ -193,6 +202,32 @@
         });
         elements.copyAll.addEventListener('click', copyAllGames);
         elements.downloadTicket.addEventListener('click', downloadTicket);
+        document.querySelectorAll('[data-preset]').forEach((button) => {
+            button.addEventListener('click', () => applyGeneratorPreset(button.dataset.preset));
+        });
+    }
+
+    function applyGeneratorPreset(preset) {
+        const values = {
+            balanced: { sumMin: 100, sumMax: 180, odd: '', high: '', overlap: 1, ending: 2, consecutive: 1, acMin: 4, acMax: 10, zones: 3 },
+            free: { sumMin: 21, sumMax: 255, odd: '', high: '', overlap: 6, ending: 6, consecutive: 5, acMin: 0, acMax: 10, zones: 1 },
+            strict: { sumMin: 110, sumMax: 170, odd: 3, high: 3, overlap: 1, ending: 2, consecutive: 1, acMin: 7, acMax: 10, zones: 4 }
+        }[preset];
+        if (!values) return;
+        elements.sumMin.value = values.sumMin;
+        elements.sumMax.value = values.sumMax;
+        elements.oddCount.value = values.odd;
+        elements.highCount.value = values.high;
+        elements.maxLastOverlap.value = values.overlap;
+        elements.maxSameEnding.value = values.ending;
+        elements.maxConsecutivePairs.value = values.consecutive;
+        elements.acMin.value = values.acMin;
+        elements.acMax.value = values.acMax;
+        elements.minZones.value = values.zones;
+        document.querySelectorAll('[data-preset]').forEach((button) => {
+            button.classList.toggle('active', button.dataset.preset === preset);
+        });
+        elements.generatorError.hidden = true;
     }
 
     function buildNumberGrid(container, type) {
@@ -251,6 +286,10 @@
             showGeneratorError('최소 합계는 최대 합계보다 클 수 없습니다.');
             return;
         }
+        if (Number(elements.acMin.value) > Number(elements.acMax.value)) {
+            showGeneratorError('최소 AC는 최대 AC보다 클 수 없습니다.');
+            return;
+        }
 
         submit.disabled = true;
         submit.classList.add('loading');
@@ -263,7 +302,13 @@
                     sumMin,
                     sumMax,
                     oddCount: elements.oddCount.value === '' ? null : Number(elements.oddCount.value),
-                    maxConsecutivePairs: 2
+                    highCount: elements.highCount.value === '' ? null : Number(elements.highCount.value),
+                    maxLastOverlap: Number(elements.maxLastOverlap.value),
+                    maxSameEnding: Number(elements.maxSameEnding.value),
+                    maxConsecutivePairs: Number(elements.maxConsecutivePairs.value),
+                    acMin: Number(elements.acMin.value),
+                    acMax: Number(elements.acMax.value),
+                    minZones: Number(elements.minZones.value)
                 };
                 state.generatedGames = predictor.generateMultiple(Number(elements.gameCount.value), options);
                 renderGeneratedGames(mode);
@@ -321,6 +366,13 @@
                 sumMin: options.sumMin,
                 sumMax: options.sumMax,
                 oddCount: options.oddCount,
+                highCount: options.highCount,
+                maxLastOverlap: options.maxLastOverlap,
+                maxSameEnding: options.maxSameEnding,
+                maxConsecutivePairs: options.maxConsecutivePairs,
+                acMin: options.acMin,
+                acMax: options.acMax,
+                minZones: options.minZones,
                 fixed: options.fixed,
                 excluded: options.excluded
             },
@@ -412,6 +464,9 @@
                     <div class="analysis-metric"><span>홀수 : 짝수</span><strong>${analysis.odd} : ${analysis.even}</strong></div>
                     <div class="analysis-metric"><span>낮은 수 : 높은 수</span><strong>${analysis.low} : ${analysis.high}</strong></div>
                     <div class="analysis-metric"><span>연속 번호 쌍</span><strong>${analysis.consecutivePairs}</strong></div>
+                    <div class="analysis-metric"><span>사용 번호 구간</span><strong>${analysis.zones}개</strong></div>
+                    <div class="analysis-metric"><span>직전 회차 겹침</span><strong>${analysis.lastOverlap}개</strong></div>
+                    <div class="analysis-metric"><span>번호쌍 평균 동시 출현</span><strong>${analysis.pairAffinity}회</strong></div>
                     <div class="analysis-metric"><span>과거 최대 일치</span><strong>${analysis.maxMatch}개${analysis.maxMatchRound ? ` · ${analysis.maxMatchRound}회` : ''}</strong></div>
                 </div>
                 <ul class="analysis-notes">${analysis.notes.map((note) => `<li>${escapeHtml(note)}</li>`).join('')}</ul>
@@ -565,10 +620,11 @@
                 address,
                 lat: 0,
                 lng: 0,
-                rounds: new Set(),
-                methods: new Set(),
+                history: new Map(),
                 wins: 0,
-                closed: Boolean(row.closed || row.status === '폐업')
+                closed: false,
+                verified: false,
+                distance: null
             };
             const lat = Number(row.lat);
             const lng = Number(row.lng);
@@ -576,18 +632,47 @@
                 current.lat = lat;
                 current.lng = lng;
             }
-            if (Number.isInteger(Number(row.r))) current.rounds.add(Number(row.r));
+            const addHistory = (roundValue, methodValue) => {
+                const round = Number(roundValue);
+                if (!Number.isInteger(round) || round < 1) return;
+                const method = normalizeMethod(methodValue);
+                const historyKey = `${round}|${method}`;
+                if (!current.history.has(historyKey)) current.history.set(historyKey, { round, method });
+            };
+            addHistory(row.r, row.m);
             if (Array.isArray(row.rounds)) row.rounds.forEach((item) => {
-                const round = Number(typeof item === 'object' ? item.r : item);
-                if (Number.isInteger(round)) current.rounds.add(round);
-                if (typeof item === 'object' && item.m) current.methods.add(String(item.m));
+                addHistory(typeof item === 'object' ? item.r : item, typeof item === 'object' ? item.m : row.m);
             });
-            if (row.m) current.methods.add(String(row.m));
-            current.wins = Math.max(current.wins, Number(row.totalWins) || 0, current.rounds.size);
+            current.wins = Math.max(current.wins, Number(row.totalWins) || 0, Number(row.w) || 0, current.history.size);
             current.closed = current.closed || Boolean(row.closed || row.status === '폐업');
+            current.verified = current.verified || Boolean(row.verified);
             grouped.set(key, current);
         });
-        return [...grouped.values()].sort((a, b) => b.wins - a.wins || a.name.localeCompare(b.name, 'ko'));
+        return [...grouped.values()].map((store) => {
+            const history = [...store.history.values()].sort((a, b) => b.round - a.round || a.method.localeCompare(b.method, 'ko'));
+            const methodCounts = history.reduce((counts, item) => {
+                counts[item.method] = (counts[item.method] || 0) + 1;
+                return counts;
+            }, {});
+            return {
+                ...store,
+                history,
+                methodCounts,
+                methods: new Set(history.map((item) => item.method)),
+                latestRound: history[0]?.round || 0,
+                wins: Math.max(store.wins, history.length),
+                tier: store.wins >= 10 ? 'gold' : store.wins >= 5 ? 'green' : 'blue'
+            };
+        }).sort((a, b) => b.wins - a.wins || a.name.localeCompare(b.name, 'ko'));
+    }
+
+    function normalizeMethod(value) {
+        const method = String(value || '정보 없음').trim();
+        if (method.includes('반자동')) return '반자동';
+        if (method.includes('자동')) return '자동';
+        if (method.includes('수동')) return '수동';
+        if (method.includes('사이트') || method.includes('온라인')) return '사이트';
+        return method || '정보 없음';
     }
 
     function initMap() {
@@ -595,8 +680,8 @@
             requestAnimationFrame(() => state.map.invalidateSize());
             return;
         }
-        renderStoreList(state.stores);
-        elements.uniqueStoreCount.textContent = state.stores.length.toLocaleString();
+        bindMapControls();
+        applyStoreFilters();
         if (window.L?.map && window.L?.markerClusterGroup) {
             createMap();
             return;
@@ -613,46 +698,84 @@
         state.clusterer = window.L.markerClusterGroup({
             chunkedLoading: true,
             showCoverageOnHover: false,
-            maxClusterRadius: 46
+            maxClusterRadius: 46,
+            iconCreateFunction: (cluster) => window.L.divIcon({
+                html: `<span>${cluster.getChildCount()}</span>`,
+                className: 'store-cluster',
+                iconSize: [42, 42]
+            })
         });
         const located = state.stores.filter((store) => store.lat && store.lng);
-        const markers = located.map((store) => {
-            const marker = window.L.marker([store.lat, store.lng], { title: store.name });
-            const routeUrl = `https://map.kakao.com/link/to/${encodeURIComponent(store.name)},${store.lat},${store.lng}`;
-            marker.bindPopup(`<div class="custom-overlay"><strong>${escapeHtml(store.name)}</strong><span>1등 기록 ${store.wins}회 · ${escapeHtml(store.address)}</span><a href="${routeUrl}" target="_blank" rel="noopener">카카오맵 길찾기</a></div>`, {
-                minWidth: 220,
-                maxWidth: 280
+        located.forEach((store) => {
+            const icon = window.L.divIcon({
+                html: `<span><b>${store.wins}</b></span>`,
+                className: `store-marker tier-${store.tier}`,
+                iconSize: store.tier === 'gold' ? [42, 48] : [36, 42],
+                iconAnchor: store.tier === 'gold' ? [21, 46] : [18, 40],
+                popupAnchor: [0, -38]
             });
+            const marker = window.L.marker([store.lat, store.lng], { title: `${store.name}, 1등 기록 ${store.wins}회`, icon });
+            marker.bindPopup(buildStorePopup(store), { minWidth: 270, maxWidth: 340, maxHeight: 430 });
             state.markers.set(store.key, { marker, store });
-            return marker;
         });
-        state.clusterer.addLayers(markers);
         state.map.addLayer(state.clusterer);
         elements.mapMessage.hidden = true;
+        applyStoreFilters();
+        moveToMyLocation(true);
+    }
 
-        elements.storeSearch.addEventListener('input', () => {
-            const query = elements.storeSearch.value.trim().toLowerCase();
-            const filtered = query
-                ? state.stores.filter((store) => `${store.name} ${store.address}`.toLowerCase().includes(query))
-                : state.stores;
-            renderStoreList(filtered);
+    function bindMapControls() {
+        [elements.storeSearch, elements.storeTierFilter, elements.storeMethodFilter, elements.storeSort].forEach((control) => {
+            control.addEventListener(control === elements.storeSearch ? 'input' : 'change', applyStoreFilters);
         });
-        elements.myLocation.addEventListener('click', moveToMyLocation);
+        elements.myLocation.addEventListener('click', () => moveToMyLocation(false));
+        document.querySelectorAll('[data-map-pane]').forEach((button) => {
+            button.addEventListener('click', () => setMapPane(button.dataset.mapPane));
+        });
+        setMapPane('map');
+    }
+
+    function applyStoreFilters() {
+        const query = elements.storeSearch.value.trim().toLowerCase();
+        const tier = elements.storeTierFilter.value;
+        const method = elements.storeMethodFilter.value;
+        const sort = elements.storeSort.value;
+        let filtered = state.stores.filter((store) => {
+            const matchesQuery = !query || `${store.name} ${store.address}`.toLowerCase().includes(query);
+            const matchesTier = tier === 'all'
+                || (tier === '10' && store.wins >= 10)
+                || (tier === '5' && store.wins >= 5 && store.wins < 10)
+                || (tier === '1' && store.wins < 5);
+            const matchesMethod = method === 'all' || store.methods.has(method);
+            return matchesQuery && matchesTier && matchesMethod;
+        });
+        filtered = [...filtered].sort((a, b) => {
+            if (sort === 'distance' && state.userLocation) return (a.distance ?? Infinity) - (b.distance ?? Infinity) || b.wins - a.wins;
+            if (sort === 'latest') return b.latestRound - a.latestRound || b.wins - a.wins;
+            return b.wins - a.wins || b.latestRound - a.latestRound;
+        });
+        renderStoreList(filtered);
+        elements.uniqueStoreCount.textContent = filtered.length.toLocaleString();
+        if (state.clusterer) {
+            state.clusterer.clearLayers();
+            state.clusterer.addLayers(filtered.map((store) => state.markers.get(store.key)?.marker).filter(Boolean));
+        }
     }
 
     function renderStoreList(stores) {
         elements.storeList.innerHTML = '';
         const fragment = document.createDocumentFragment();
-        stores.slice(0, 120).forEach((store) => {
+        stores.slice(0, 200).forEach((store) => {
             const button = document.createElement('button');
             button.type = 'button';
-            button.className = 'store-item';
+            button.className = `store-item tier-${store.tier}`;
             const name = document.createElement('strong');
             const address = document.createElement('span');
             const wins = document.createElement('small');
             name.textContent = store.name;
             address.textContent = store.address;
-            wins.textContent = `1등 기록 ${store.wins}회${store.closed ? ' · 영업 종료 기록' : ''}`;
+            const distance = Number.isFinite(store.distance) ? ` · ${formatDistance(store.distance)}` : '';
+            wins.textContent = `1등 ${store.wins}회 · 최근 ${store.latestRound || '-'}회${distance}${store.closed ? ' · 폐업 기록' : ''}`;
             button.append(name, address, wins);
             button.disabled = !store.lat || !store.lng;
             button.addEventListener('click', () => focusStore(store.key));
@@ -660,6 +783,37 @@
         });
         elements.storeList.appendChild(fragment);
         if (!stores.length) elements.storeList.innerHTML = '<div class="empty-list">검색 결과가 없습니다.</div>';
+    }
+
+    function buildStorePopup(store) {
+        const popup = document.createElement('div');
+        popup.className = 'custom-overlay';
+        const status = store.closed ? '폐업 기록' : '영업 여부 확인 필요';
+        const methodSummary = ['자동', '수동', '반자동', '사이트']
+            .filter((method) => store.methodCounts[method])
+            .map((method) => `${method === '사이트' ? '온라인' : method} ${store.methodCounts[method]}`)
+            .join(' · ') || '방식 정보 없음';
+        const history = store.history.length
+            ? store.history.map((item) => `<li><span>제 ${item.round}회</span><strong>${escapeHtml(item.method === '사이트' ? '온라인' : item.method)}</strong></li>`).join('')
+            : '<li><span>상세 회차 정보 없음</span></li>';
+        popup.innerHTML = `
+            <div class="popup-title-row">
+                <strong>${escapeHtml(store.name)}</strong>
+                <span class="status-badge${store.closed ? ' closed' : ''}">${status}</span>
+            </div>
+            <div class="popup-win tier-${store.tier}">1등 총 ${store.wins}회 기록</div>
+            <p class="popup-method">당첨 방식: ${escapeHtml(methodSummary)}</p>
+            <p class="popup-address">${escapeHtml(store.address)}</p>
+            <div class="popup-actions">
+                <button class="popup-copy" type="button">주소 복사</button>
+                <a href="https://map.kakao.com/link/to/${encodeURIComponent(store.name)},${store.lat},${store.lng}" target="_blank" rel="noopener">길찾기</a>
+            </div>
+            <details class="popup-history">
+                <summary>당첨 회차 ${store.history.length}건 보기</summary>
+                <ul>${history}</ul>
+            </details>`;
+        popup.querySelector('.popup-copy').addEventListener('click', () => copyText(store.address, '판매점 주소를 복사했습니다.'));
+        return popup;
     }
 
     function focusStore(key) {
@@ -672,21 +826,72 @@
             state.map.setView(entry.marker.getLatLng(), 15);
             entry.marker.openPopup();
         });
+        if (matchMedia('(max-width: 760px)').matches) setMapPane('map');
     }
 
-    function moveToMyLocation() {
+    function moveToMyLocation(automatic = false) {
         if (!navigator.geolocation || !state.map) {
-            showToast('이 브라우저에서는 위치 기능을 사용할 수 없습니다.');
+            elements.locationStatus.textContent = '이 브라우저에서는 위치 기능을 사용할 수 없습니다.';
             return;
         }
         elements.myLocation.disabled = true;
+        elements.locationStatus.textContent = automatic ? '현재 위치를 확인하고 있습니다…' : '현재 위치를 다시 확인하고 있습니다…';
         navigator.geolocation.getCurrentPosition((position) => {
-            state.map.setView([position.coords.latitude, position.coords.longitude], 14);
+            const { latitude, longitude, accuracy } = position.coords;
+            state.userLocation = { lat: latitude, lng: longitude };
+            state.stores.forEach((store) => {
+                store.distance = store.lat && store.lng ? distanceKm(latitude, longitude, store.lat, store.lng) : null;
+            });
+            state.map.setView([latitude, longitude], 14);
+            if (state.userMarker) state.userMarker.remove();
+            state.userMarker = window.L.circleMarker([latitude, longitude], {
+                radius: 9,
+                color: '#FFFFFF',
+                weight: 3,
+                fillColor: '#123B75',
+                fillOpacity: 1
+            }).addTo(state.map).bindTooltip('내 위치');
+            if (state.userAccuracy) state.userAccuracy.remove();
+            state.userAccuracy = window.L.circle([latitude, longitude], {
+                radius: Math.min(Math.max(accuracy || 50, 30), 500),
+                color: '#123B75',
+                weight: 1,
+                fillOpacity: 0.08
+            }).addTo(state.map);
+            elements.locationStatus.textContent = '현재 위치를 기준으로 가까운 판매점부터 정렬했습니다.';
+            elements.storeSort.value = 'distance';
+            applyStoreFilters();
             elements.myLocation.disabled = false;
         }, () => {
             elements.myLocation.disabled = false;
-            showToast('위치 권한이 없거나 현재 위치를 확인하지 못했습니다.');
-        }, { enableHighAccuracy: false, timeout: 8000 });
+            elements.locationStatus.textContent = '위치를 확인하지 못해 전국 지도를 표시합니다. 위치 권한을 허용한 뒤 다시 시도할 수 있습니다.';
+            if (!automatic) showToast('위치 권한이 없거나 현재 위치를 확인하지 못했습니다.');
+        }, { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 });
+    }
+
+    function setMapPane(pane) {
+        state.mapPane = pane === 'list' ? 'list' : 'map';
+        document.querySelector('.map-layout').dataset.mobilePane = state.mapPane;
+        document.querySelectorAll('[data-map-pane]').forEach((button) => {
+            const active = button.dataset.mapPane === state.mapPane;
+            button.classList.toggle('active', active);
+            button.setAttribute('aria-pressed', String(active));
+        });
+        if (state.mapPane === 'map' && state.map) requestAnimationFrame(() => state.map.invalidateSize());
+    }
+
+    function distanceKm(lat1, lng1, lat2, lng2) {
+        const radius = 6371;
+        const toRadians = (value) => value * Math.PI / 180;
+        const dLat = toRadians(lat2 - lat1);
+        const dLng = toRadians(lng2 - lng1);
+        const a = Math.sin(dLat / 2) ** 2
+            + Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) * Math.sin(dLng / 2) ** 2;
+        return radius * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    function formatDistance(distance) {
+        return distance < 1 ? `${Math.round(distance * 1000)}m` : `${distance.toFixed(distance < 10 ? 1 : 0)}km`;
     }
 
     function startCountdown() {

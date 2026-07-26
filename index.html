@@ -160,9 +160,30 @@
                             <label class="mode-option"><input type="radio" name="mode" value="balanced" checked><span><strong>누적 균형</strong><small>누적 빈도의 중간 구간 중심</small></span></label>
                             <label class="mode-option"><input type="radio" name="mode" value="trend"><span><strong>최근 흐름</strong><small>최근 20회 출현 비중 반영</small></span></label>
                             <label class="mode-option"><input type="radio" name="mode" value="overdue"><span><strong>장기 미출현</strong><small>쉬었던 기간에 가중치</small></span></label>
+                            <label class="mode-option"><input type="radio" name="mode" value="pair"><span><strong>함께 나온 수</strong><small>과거 동시 출현 관계를 반영</small></span></label>
+                            <label class="mode-option"><input type="radio" name="mode" value="spread"><span><strong>구간 분산</strong><small>번호대와 끝수 겹침을 줄임</small></span></label>
                             <label class="mode-option wide"><input type="radio" name="mode" value="mix"><span><strong>데이터 혼합</strong><small>누적·최근·미출현 지표를 함께 반영</small></span></label>
                         </div>
                     </fieldset>
+
+                    <details class="advanced-options">
+                        <summary>고급 조건으로 자유롭게 조정</summary>
+                        <div class="preset-row" aria-label="조건 프리셋">
+                            <button class="preset-button active" type="button" data-preset="balanced">균형 기본</button>
+                            <button class="preset-button" type="button" data-preset="free">완전 자유</button>
+                            <button class="preset-button" type="button" data-preset="strict">분산 강화</button>
+                        </div>
+                        <div class="form-grid advanced-grid">
+                            <label>높은 수(23~45)<select id="high-count"><option value="">자동</option><option value="2">2개</option><option value="3">3개</option><option value="4">4개</option></select></label>
+                            <label>직전 회차 겹침<select id="max-last-overlap"><option value="6">제한 없음</option><option value="0">0개까지</option><option value="1" selected>1개까지</option><option value="2">2개까지</option></select></label>
+                            <label>같은 끝수<select id="max-same-ending"><option value="6">제한 없음</option><option value="2" selected>2개까지</option><option value="3">3개까지</option></select></label>
+                            <label>연속 번호 쌍<select id="max-consecutive-pairs"><option value="5">제한 없음</option><option value="0">없음</option><option value="1" selected>1쌍까지</option><option value="2">2쌍까지</option></select></label>
+                            <label>최소 AC<input id="ac-min" type="number" min="0" max="10" value="4" inputmode="numeric"></label>
+                            <label>최대 AC<input id="ac-max" type="number" min="0" max="10" value="10" inputmode="numeric"></label>
+                            <label>최소 번호 구간<select id="min-zones"><option value="1">제한 없음</option><option value="3" selected>3구간</option><option value="4">4구간</option><option value="5">5구간</option></select></label>
+                        </div>
+                        <p class="field-help">조건은 조합의 모양을 고르는 기준일 뿐, 당첨 확률을 높이는 기준이 아닙니다.</p>
+                    </details>
 
                     <fieldset>
                         <legend>2. 기본 조건</legend>
@@ -238,15 +259,30 @@
                 <div><span class="eyebrow">WINNING STORES</span><h1 id="map-title">1등 판매점 기록 지도</h1><p>과거 1등 배출 기록을 모아 보고 가까운 판매점을 찾습니다.</p></div>
                 <button id="my-location" class="button secondary small" type="button"><svg><use href="#icon-location"></use></svg>내 위치로 이동</button>
             </div>
+            <div class="map-toolbar panel" aria-label="지도 필터">
+                <label class="search-label">판매점·주소 검색<input id="store-search" type="search" placeholder="예: 강남, 복권방"></label>
+                <label>당첨 기록<select id="store-tier-filter"><option value="all">전체 등급</option><option value="10">10회 이상</option><option value="5">5회 이상</option><option value="1">1~4회</option></select></label>
+                <label>당첨 방식<select id="store-method-filter"><option value="all">전체 방식</option><option value="자동">자동</option><option value="수동">수동</option><option value="반자동">반자동</option><option value="사이트">온라인</option></select></label>
+                <label>정렬<select id="store-sort"><option value="distance">내 위치에서 가까운 순</option><option value="wins">당첨 기록 많은 순</option><option value="latest">최근 당첨 회차 순</option></select></label>
+            </div>
+            <div class="mobile-map-switch" role="group" aria-label="지도와 목록 보기">
+                <button class="active" type="button" data-map-pane="map" aria-pressed="true">지도</button>
+                <button type="button" data-map-pane="list" aria-pressed="false">판매점 목록</button>
+            </div>
             <div class="map-layout">
                 <aside class="panel store-panel">
-                    <label class="search-label">판매점·주소 검색<input id="store-search" type="search" placeholder="예: 강남, 복권방"></label>
                     <div class="store-summary"><strong id="unique-store-count">-</strong><span>개 판매점 기록</span></div>
+                    <p id="location-status" class="location-status" role="status">현재 위치를 확인하면 가까운 순으로 볼 수 있습니다.</p>
                     <div id="store-list" class="store-list"></div>
                 </aside>
                 <div class="map-wrap">
                     <div id="map-canvas" class="map-canvas" aria-label="1등 판매점 지도"></div>
                     <div id="map-message" class="map-message" role="status">지도를 준비하고 있습니다.</div>
+                    <div class="map-legend" aria-label="판매점 당첨 횟수 등급">
+                        <span><i class="tier-dot tier-gold"></i><b>10회 이상</b></span>
+                        <span><i class="tier-dot tier-green"></i><b>5~9회</b></span>
+                        <span><i class="tier-dot tier-blue"></i><b>1~4회</b></span>
+                    </div>
                 </div>
             </div>
             <p class="source-note">판매점 정보는 과거 공개 기록을 모은 것이며 현재 영업 여부, 동일 상호, 이전 여부가 달라질 수 있습니다. 방문 전 지도 또는 판매점에 다시 확인하세요.</p>
